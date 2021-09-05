@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const authenticateOfficer = async (req, res, next) => {
+const authenticateUser = async (req, res, next) => {
 	if (!req.headers["authorization"]) {
 		return res.json({ message: "undefined" });
 	}
@@ -9,11 +9,11 @@ const authenticateOfficer = async (req, res, next) => {
 		if (!authHeader) {
 			return res.json({ message: "undefined" });
 		}
-		const token = await jwt.verify(authHeader, process.env.OFFICER_SECRET);
+		const token = await jwt.verify(authHeader, process.env.USER_SECRET);
 		req.data = token;
 		next();
 	} catch (err) {
 		res.status(401).json({ message: "Unauthorized" });
 	}
 };
-module.exports = authenticateOfficer;
+module.exports = authenticateUser;

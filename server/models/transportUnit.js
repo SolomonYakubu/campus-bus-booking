@@ -5,17 +5,28 @@ const busSchema = mongoose.Schema({
 		type: Number,
 		required: true,
 	},
+	destination: {
+		type: String,
+	},
 	driver_id: {
 		type: String,
 		unique: true,
 	},
-	status: {
+	available: {
 		type: Boolean,
 		default: false,
 	},
 	number_of_seat: Number,
-	booked_seat: [],
-	destination: String, //HtoC or CtoH
+	booked_seat: [
+		{
+			seat: Number,
+			code: String,
+		},
+	],
+
+	departure_time: {
+		type: Date,
+	},
 });
 
 module.exports = mongoose.model("Bus", busSchema);
