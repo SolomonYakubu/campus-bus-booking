@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const cors = require("cors");
 const userRoutes = require("./routes/user");
 const busRoutes = require("./routes/transportUnit");
 mongoose.Promise = global.Promise;
@@ -14,10 +15,8 @@ mongoose
 	.then((res) => console.log(`connected to db!!!`))
 	.catch((err) => console.log(err));
 
-app.get("/", (req, res) => {
-	res.send("testing....");
-});
 app.use(express.json());
+app.use(cors());
 app.use("/user", userRoutes);
 app.use("/bus", busRoutes);
 const port = process.env.PORT || 8000;

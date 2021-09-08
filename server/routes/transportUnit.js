@@ -51,7 +51,7 @@ router.post("/driver/login", async (req, res) => {
 		const bus = await Bus.findOne({ bus_id });
 		const verified = await bcrypt.compare(driver_id, bus.driver_id);
 		if (verified) {
-			const token = jwt.sign({ driver_id, bus_id }, process.env.DRIVER_SECRET, {
+			const token = jwt.sign({ id: bus._id }, process.env.DRIVER_SECRET, {
 				expiresIn: "1h",
 			});
 			return res.status(201).json({ message: "Logged in successfully", token });
@@ -62,12 +62,12 @@ router.post("/driver/login", async (req, res) => {
 	}
 });
 router.post("/driver/status", authenticateDriver, async (req, res) => {
-	const bus_id = req.data.bus_id;
+	const bus_id = req.data.id;
 	const available = req.body.available;
 	const destination = req.body.destination;
 	const departure_time = req.body.departure_time;
 	try {
-		const bus = await Bus.findOne({ bus_id });
+		const bus = await Bus.findById(bus_id);
 		await bus.updateOne({
 			available,
 			destination,
@@ -75,6 +75,20 @@ router.post("/driver/status", authenticateDriver, async (req, res) => {
 		});
 		await bus.save();
 		return res.sendStatus(200);
+	} catch (error) {
+		return res.json({ message: error.message });
+	}
+});
+router.post("/ticket/verify/:code", authenticateDriver, async (req, res) => {
+	const code = req.params.code;
+	try {
+		const bus = await Bus.findById(req.data.id);
+		const verified = bus.booked_seat.filter((item) => item.code == code);
+		// return res.json(verified);
+		if (verified != 0) {
+			return res.json(verified[0]);
+		}
+		return res.status(404).json({ message: "Not Found" });
 	} catch (error) {
 		return res.json({ message: error.message });
 	}
