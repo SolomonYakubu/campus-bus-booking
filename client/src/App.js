@@ -3,10 +3,10 @@ import { useState } from "react";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./components/Home";
 import User from "./components/UserLogin";
-import Pay from "./components/Pay";
-import QRCode from "qrcode.react";
+
 import Header from "./components/Header";
 import Loader from "./components/Loader";
+import Book from "./components/Book";
 import UserDashboard from "./components/UserDashboard";
 function App() {
 	const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +35,9 @@ function App() {
 						</Route>
 						<Route exact path="/user/dashboard">
 							<UserDashboard loading={loading} />
+						</Route>
+						<Route exact path="/user/book">
+							<Book loading={loading} />
 						</Route>
 					</Switch>
 				</Router>

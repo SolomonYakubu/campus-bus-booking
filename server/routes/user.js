@@ -13,7 +13,9 @@ router.get("/", authenticateUser, async (req, res) => {
 	try {
 		const user = await User.findById(req.data.id);
 		const bus = await Bus.find();
-		const availableBuses = bus.filter((item) => item.available);
+		const availableBuses = bus.filter(
+			(item) => item.available && item.destination == "HtoC"
+		);
 
 		const data = {
 			name: user.name,
@@ -91,7 +93,12 @@ router.get("/bus/:destination", authenticateUser, async (req, res) => {
 		const availableBusesDestination = availableBuses.filter(
 			(item) => item.destination == destination
 		);
-		res.json(availableBusesDestination.map((item) => item.bus_id));
+		res.json(
+			availableBusesDestination.map((item) => ({
+				bus_id: item.bus_id,
+				departure_time: item.departure_time,
+			}))
+		);
 	} catch (error) {
 		res.json({ message: error.message });
 	}
@@ -103,6 +110,7 @@ router.post("/book/:id", authenticateUser, async (req, res) => {
 	const book = async () => {
 		try {
 			const bus = await Bus.findOne({ bus_id });
+
 			const code = crypto.randomBytes(2).toString("hex");
 			const seat = bus.booked_seat.length + 1;
 			bus.booked_seat.push({
@@ -140,8 +148,11 @@ router.post("/book/:id", authenticateUser, async (req, res) => {
 			const user = await User.findById(req.data.id);
 			if (user.wallet >= 50) {
 				user.wallet -= 50;
+				user.wallet = user.wallet.toFixed(2);
 				user.save();
 				book();
+			} else {
+				return res.sendStatus(406);
 			}
 		}
 	} catch (error) {

@@ -31,6 +31,7 @@ const PaystackHookExample = () => {
 				onClick={() => {
 					initializePayment(onSuccess, onClose);
 				}}
+				className="button book"
 			>
 				Pay #50
 			</button>
@@ -65,12 +66,12 @@ function Pay() {
 				</a>
 			// </header> */}
 			<PaystackHookExample />
-			<QrReader
+			{/* <QrReader
 				delay={300}
 				onError={handleError}
 				onScan={handleScan}
 				style={{ width: "100%" }}
-			/>
+			/> */}
 			<p>{result}</p>
 		</div>
 	);
