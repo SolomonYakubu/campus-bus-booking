@@ -5,14 +5,18 @@ import Home from "./components/Home";
 import User from "./components/UserLogin";
 
 import Header from "./components/Header";
+// import Footer from "./components/Footer";
 import Loader from "./components/Loader";
 import Book from "./components/Book";
+
 import UserDashboard from "./components/UserDashboard";
 function App() {
 	const [isLoading, setIsLoading] = useState(false);
+	const [showNavbar, setShowNavbar] = useState(false);
 	const loading = (val) => {
 		val ? setIsLoading(true) : setIsLoading(false);
 	};
+
 	return (
 		<>
 			{isLoading ? <Loader /> : null}
@@ -23,24 +27,26 @@ function App() {
 					pointerEvents: isLoading ? "none" : "all",
 				}}
 			>
-				<Header />
-
 				<Router>
-					<Switch>
-						<Route exact path="/">
-							<Home />
-						</Route>
-						<Route exact path="/user">
-							<User loading={loading} />
-						</Route>
-						<Route exact path="/user/dashboard">
-							<UserDashboard loading={loading} />
-						</Route>
-						<Route exact path="/user/book">
-							<Book loading={loading} />
-						</Route>
-					</Switch>
+					<Header showNavbar={showNavbar} setShowNavbar={setShowNavbar} />
+					<section style={{ display: showNavbar ? "none" : "block" }}>
+						<Switch>
+							<Route exact path="/">
+								<Home />
+							</Route>
+							<Route exact path="/user">
+								<User loading={loading} />
+							</Route>
+							<Route exact path="/user/dashboard">
+								<UserDashboard loading={loading} />
+							</Route>
+							<Route exact path="/user/book">
+								<Book loading={loading} />
+							</Route>
+						</Switch>
+					</section>
 				</Router>
+				{/* <Footer /> */}
 			</div>
 		</>
 	);

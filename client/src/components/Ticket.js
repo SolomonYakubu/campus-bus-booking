@@ -3,8 +3,7 @@ import QRCode from "qrcode.react";
 export default function Ticket() {
 	const ticket = JSON.parse(localStorage.getItem("ticket"));
 	const data = JSON.parse(localStorage.getItem("data"));
-	console.log(ticket);
-	console.log(data);
+
 	return (
 		<div className="container">
 			<div
@@ -13,14 +12,15 @@ export default function Ticket() {
 					flexDirection: "column",
 					alignItems: "center",
 					justifyContent: "space-between",
-					fontFamily: "Buenard",
+					fontFamily: "Arapey",
 					fontSize: "18px",
 					background: "#fff",
 					padding: "20px",
-					width: "80%",
+					// width: "80%",
 					height: "60vh",
 					color: "#666",
 				}}
+				className="ticket"
 			>
 				<div style={{ fontSize: "22px", fontWeight: "bold" }}>Ticket</div>
 				<div>Name: {data.name}</div>

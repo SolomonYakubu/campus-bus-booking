@@ -1,14 +1,41 @@
 import axios from "axios";
 import React, { useEffect, useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBook, faBus } from "@fortawesome/free-solid-svg-icons";
+import { faBus } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
+// import { usePaystackPayment } from "react-paystack";
+import Swal from "sweetalert2";
+import Pay from "./Pay";
+
 export default function UserDashboard({ loading }) {
 	const token = localStorage.getItem("token");
 	const [data, setData] = useState({});
 	const [bus, setBus] = useState([]);
 	const [active, setActive] = useState(true);
+	const [amount, setAmount] = useState(0);
+	const [fund, setFund] = useState(false);
+
+	const fundWallet = () => {
+		Swal.fire({
+			title: "Enter Amount",
+			input: "number",
+			inputAttributes: {
+				autocapitalize: "off",
+			},
+			showCancelButton: true,
+			confirmButtonText: "Fund wallet",
+			showLoaderOnConfirm: true,
+			preConfirm: (amount) => {
+				setAmount(amount * 100);
+			},
+			allowOutsideClick: () => !Swal.isLoading(),
+		}).then((result) => {
+			if (result.isConfirmed) {
+				setFund(true);
+			}
+		});
+	};
 
 	const history = useHistory();
 	const getData = useCallback(async () => {
@@ -40,6 +67,7 @@ export default function UserDashboard({ loading }) {
 			switch (err) {
 				case "401":
 					history.push("/user");
+					localStorage.removeItem("token");
 					break;
 				default:
 					toast.error("Network Error");
@@ -101,69 +129,113 @@ export default function UserDashboard({ loading }) {
 	return (
 		<div
 			className="container"
-			style={{ paddingTop: "6rem", paddingBottom: "2rem" }}
+			style={{ paddingTop: "5rem", paddingBottom: "2rem" }}
 		>
-			<div className="wallet">Wallet: #{data.wallet}</div>
-			<div
-				style={{ fontSize: "22px", fontFamily: "flamenco", padding: "20px" }}
-			>
-				Where are you going to?
-			</div>
-			<div
-				style={{
-					display: "flex",
-					alignSelf: "flex-end",
-					marginRight: "20px",
-					background: "#fff",
-					borderRadius: "47%",
-				}}
-			>
-				<button
-					style={active ? roundButtonActive : roundButtonInActive}
-					onClick={() => handleActive("hostel")}
-				>
-					Hostel
-				</button>
-				<button
-					style={!active ? roundButtonActive : roundButtonInActive}
-					onClick={() => handleActive("campus")}
-				>
-					Campus
-				</button>
-			</div>
-			{bus
-				? bus.map((item, index) => (
-						<div className="dashboard-div" key={index}>
-							<div
-								style={{
-									height: "150px",
-									width: "150px",
-									borderRadius: "50%",
-									background: "rgb(185, 241, 215)",
-									display: "flex",
-									flexDirection: "column",
-									alignItems: "center",
-									justifyContent: "center",
-								}}
-							>
-								<FontAwesomeIcon
-									icon={faBus}
-									size="lg"
-									style={{ color: "rgb(40, 196, 123)" }}
-								/>
-								<b style={{ color: "#fff", fontSize: "2rem" }}>
-									0{item.bus_id}
-								</b>
-							</div>
-
-							{/* <div>Bus 0{item.bus_id}</div> */}
-							<p>{item.departure_time ? item.departure_time : null}</p>
-							<button className="button book" onClick={() => book(item.bus_id)}>
-								Book
-							</button>
+			{!fund ? (
+				<>
+					<div
+						style={{
+							display: "flex",
+							// width: "90%",
+							flexDirection: "column",
+							justifyContent: "center",
+							alignItems: "center",
+							alignSelf: "flex-end",
+							marginRight: "30px",
+							backgroundColor: "#fff",
+							padding: "10px",
+						}}
+					>
+						<div className="" style={{ color: "#444" }}>
+							Wallet: &#8358;{data.wallet}
 						</div>
-				  ))
-				: null}
+						<button
+							className="wallet button blue"
+							style={{
+								fontSize: "16px",
+								fontWeight: "lighter",
+								alignSelf: "flex-start",
+								margin: 0,
+							}}
+							onClick={fundWallet}
+						>
+							Fund Wallet
+						</button>
+					</div>
+					<div
+						style={{
+							fontSize: "22px",
+							fontFamily: "flamenco",
+							padding: "20px",
+						}}
+					>
+						Where are you going to?
+					</div>
+					<div
+						style={{
+							display: "flex",
+							// alignSelf: "flex-end",
+							// marginRight: "20px",
+							background: "#fff",
+							borderRadius: "47%",
+						}}
+					>
+						<button
+							style={active ? roundButtonActive : roundButtonInActive}
+							onClick={() => handleActive("hostel")}
+						>
+							Hostel
+						</button>
+						<button
+							style={!active ? roundButtonActive : roundButtonInActive}
+							onClick={() => handleActive("campus")}
+						>
+							Campus
+						</button>
+					</div>
+					<div className="home">
+						{bus
+							? bus.map((item, index) => (
+									<div className="dashboard-div" key={index}>
+										<div
+											style={{
+												height: "150px",
+												width: "150px",
+												borderRadius: "50%",
+												background: "#b3f1cb",
+												display: "flex",
+												flexDirection: "column",
+												alignItems: "center",
+												justifyContent: "center",
+											}}
+											className=""
+										>
+											<FontAwesomeIcon
+												icon={faBus}
+												size="lg"
+												style={{ color: "#50c878" }}
+											/>
+											<b style={{ color: "#fff", fontSize: "2rem" }}>
+												0{item.bus_id}
+											</b>
+										</div>
+
+										{/* <div>Bus 0{item.bus_id}</div> */}
+										<p>{item.departure_time ? item.departure_time : null}</p>
+										<button
+											className="button book"
+											onClick={() => book(item.bus_id)}
+										>
+											Book
+										</button>
+									</div>
+							  ))
+							: null}
+					</div>
+				</>
+			) : (
+				<Pay amount={amount} loading={loading} setFund={setFund} />
+			)}
 		</div>
 	);
 }

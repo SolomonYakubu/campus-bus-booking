@@ -1,80 +1,45 @@
-import React, { useState } from "react";
-// import logo from "./logo.svg";
 import { usePaystackPayment } from "react-paystack";
-import QrReader from "react-qr-reader";
-// import "./App.css";
-
-const config = {
-	reference: new Date().getTime().toString(),
-	email: "user@example.com",
-	amount: 5000,
-	publicKey: "pk_test_0a4093b99f32878ae511ab0f19d32710c16702f8",
-};
-
-// you can call this function anything
-const onSuccess = (reference) => {
-	// Implementation for whatever you want to do with reference and after success call.
-	console.log(reference);
-};
-
-// you can call this function anything
-const onClose = () => {
-	// implementation for  whatever you want to do when the Paystack dialog closed.
-	console.log("closed");
-};
-
-const PaystackHookExample = () => {
-	const initializePayment = usePaystackPayment(config);
-	return (
-		<div>
-			<button
-				onClick={() => {
-					initializePayment(onSuccess, onClose);
-				}}
-				className="button book"
-			>
-				Pay #50
-			</button>
-		</div>
-	);
-};
-
-function Pay() {
-	const [result, setResult] = useState("");
-	const handleError = (err) => {
-		console.log(err);
+import { useEffect } from "react";
+import axios from "axios";
+export default function Pay({ amount, loading, setFund }) {
+	const data = JSON.parse(localStorage.getItem("data"));
+	const initializePayment = usePaystackPayment({
+		reference: new Date().getTime().toString(),
+		email: data.email,
+		amount: amount,
+		publicKey: "pk_test_0a4093b99f32878ae511ab0f19d32710c16702f8",
+	});
+	useEffect(() => {
+		return () => setFund(false);
+	}, [setFund]);
+	const onSuccess = (reference) => {
+		loading(true);
+		const check = async () => {
+			try {
+				await axios.post(
+					`http://192.168.43.244:8000/user/wallet/fund`,
+					{ reference_id: reference.reference },
+					{
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem("token")}`,
+						},
+					}
+				);
+				loading(false);
+				window.location.reload();
+			} catch (error) {
+				loading(false);
+				window.location.reload();
+			}
+		};
+		check();
 	};
-	const handleScan = (data) => {
-		if (data) {
-			setResult(data);
-		}
+
+	const onClose = () => {
+		loading(false);
+		setFund(false);
+		window.location.reload();
 	};
-	return (
-		<div className="App">
-			{/* <header className="App-header">
-				{/* <img src={logo} className="App-logo" alt="logo" /> */}
-			{/* <p>
-					Edit <code>src/App.js</code> and save to reload.
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			// </header> */}
-			<PaystackHookExample />
-			{/* <QrReader
-				delay={300}
-				onError={handleError}
-				onScan={handleScan}
-				style={{ width: "100%" }}
-			/> */}
-			<p>{result}</p>
-		</div>
-	);
+	initializePayment(onSuccess, onClose);
+	return <div>{loading(true)}</div>;
 }
-
-export default Pay;

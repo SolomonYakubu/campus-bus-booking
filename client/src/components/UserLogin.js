@@ -33,7 +33,7 @@ const LoginForm = ({
 			<button
 				className="button login-btn"
 				onClick={() => login()}
-				style={{ opacity: isLoginEmpty ? "0.3" : "1" }}
+				style={{ opacity: isLoginEmpty ? "0.6" : "1" }}
 			>
 				Login
 			</button>
@@ -87,7 +87,7 @@ const SignUpForm = ({
 			<button
 				className="button login-btn"
 				onClick={signUp}
-				style={{ opacity: isSignUpEmpty ? "0.3" : "1" }}
+				style={{ opacity: isSignUpEmpty ? "0.6" : "1" }}
 			>
 				Sign Up
 			</button>
@@ -119,6 +119,11 @@ export default function UserLogin({ loading }) {
 			setisSignUpEmpty(true);
 		}
 	}, [name, email, matric, password]);
+	useEffect(() => {
+		if (localStorage.getItem("token")) {
+			history.push("/user/dashboard");
+		}
+	}, [history]);
 
 	const onIdChange = (val) => {
 		setId(val);
@@ -135,7 +140,7 @@ export default function UserLogin({ loading }) {
 	const onMatricChange = (val) => {
 		setMatric(val);
 	};
-	console.log(id);
+
 	const login = async () => {
 		if (isLoginEmpty) {
 			return;
@@ -150,13 +155,12 @@ export default function UserLogin({ loading }) {
 					password,
 				}
 			);
-			console.log(response);
+
 			if (response.status === 200) {
 				toast.success("Logged in successfully!!", { autoClose: 1000 });
 				localStorage.setItem("token", response.data);
-
-				loading(false);
 				history.push("/user/dashboard");
+				loading(false);
 			}
 		} catch (error) {
 			loading(false);
@@ -187,7 +191,7 @@ export default function UserLogin({ loading }) {
 				password,
 				matric_number: matric,
 			});
-			if (response.status == 201) {
+			if (response.status === 201) {
 				toast.success("Account Created Successfully");
 				setActive(true);
 				loading(false);
@@ -209,10 +213,12 @@ export default function UserLogin({ loading }) {
 					alignItems: "center",
 					// padding: "10px",
 					width: "100vw",
-					height: "91vh",
-					marginTop: 0,
-					paddingTop: 0,
-					paddingBottom: 0,
+					height: "37rem",
+					alignSelf: "center",
+					// position: "relative",
+					// marginTop: 0,
+					// paddingTop: 0,
+					// paddingBottom: 0,
 				}}
 			>
 				<ToastContainer />
@@ -225,11 +231,12 @@ export default function UserLogin({ loading }) {
 						background: "#fff",
 						padding: "20px",
 						paddingTop: 0,
-						width: "90%",
+						// width: "90%",
 						alignSelf: "center",
 						borderRadius: "5px",
 						boxShadow: "1px 10px 10px grey",
 						margin: "auto",
+						// position: "relative",
 					}}
 				>
 					<div
@@ -251,7 +258,7 @@ export default function UserLogin({ loading }) {
 							style={{
 								borderTopStyle: active ? "solid" : "none",
 								borderWidth: "3px",
-								borderColor: "rgb(40, 196, 123)",
+								borderColor: "#50c878",
 								background: active ? "#fff" : "#f4f4f4 ",
 								opacity: active ? "1" : "0.5",
 							}}
@@ -265,7 +272,7 @@ export default function UserLogin({ loading }) {
 							style={{
 								borderTopStyle: !active ? "solid" : "none",
 								borderWidth: "3px",
-								borderColor: "rgb(40, 196, 123)",
+								borderColor: "#50c878",
 								background: !active ? "#fff" : "#f4f4f4 ",
 								opacity: !active ? "1" : "0.5",
 							}}

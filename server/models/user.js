@@ -30,7 +30,7 @@ const userSchema = mongoose.Schema({
 	},
 	wallet: {
 		type: Number,
-		default: 500,
+		default: 0,
 	},
 });
 

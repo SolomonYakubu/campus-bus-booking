@@ -75,7 +75,7 @@ router.post("/login", async (req, res) => {
 		}
 		if (verified) {
 			token = jwt.sign({ id: user._id }, process.env.USER_SECRET, {
-				expiresIn: "5h",
+				expiresIn: "30m",
 			});
 			return res.json(token);
 		}
@@ -110,7 +110,6 @@ router.post("/book/:id", authenticateUser, async (req, res) => {
 	const book = async () => {
 		try {
 			const bus = await Bus.findOne({ bus_id });
-
 			const code = crypto.randomBytes(2).toString("hex");
 			const seat = bus.booked_seat.length + 1;
 			bus.booked_seat.push({
@@ -118,9 +117,11 @@ router.post("/book/:id", authenticateUser, async (req, res) => {
 				code,
 			});
 
-			if (bus.booked_seat.length - 1 >= bus.number_of_seat) {
+			if (bus.booked_seat.length == bus.number_of_seat) {
 				await bus.updateOne({ available: false });
-				return res.json({ message: "No more seats" });
+				await bus.save();
+				// return res.json({ bus_id, seat, code });
+				// return res.json({ message: "No more seats" });
 			}
 			await bus.save();
 			return res.json({ bus_id, seat, code });
@@ -180,7 +181,7 @@ router.post("/wallet/fund", authenticateUser, async (req, res) => {
 			res.json({ wallet: user.wallet });
 		}
 	} catch (error) {
-		res.json({ message: error.message });
+		return res.json({ message: error.message });
 	}
 });
 module.exports = router;

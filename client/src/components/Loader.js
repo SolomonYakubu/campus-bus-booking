@@ -5,7 +5,7 @@ export default function Spinner() {
 	return (
 		<>
 			<div className="loader">
-				<Loader type="Oval" color="#007fff" height={30} />
+				<Loader type="TailSpin" color="#007fff" height={50} />
 			</div>
 		</>
 	);
