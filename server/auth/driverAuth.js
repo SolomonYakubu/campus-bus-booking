@@ -7,7 +7,7 @@ const authenticateDriver = async (req, res, next) => {
 	const authHeader = req.headers["authorization"].split(" ")[1];
 	try {
 		if (!authHeader) {
-			return res.json({ message: "undefined" });
+			return res.status(406).json({ message: "undefined" });
 		}
 		const token = await jwt.verify(authHeader, process.env.DRIVER_SECRET);
 		req.data = token;

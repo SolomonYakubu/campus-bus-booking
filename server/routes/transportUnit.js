@@ -7,7 +7,12 @@ const bcrypt = require("bcrypt");
 const authenticateOfficer = require("../auth/transportOfficerAuth");
 const authenticateDriver = require("../auth/driverAuth");
 const Bus = require("../models/transportUnit");
-const { syncBuiltinESMExports } = require("module");
+const User = require("../models/user");
+var dayjs = require("dayjs");
+var utc = require("dayjs/plugin/utc");
+var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
+dayjs.extend(utc);
+dayjs.extend(timezone);
 router.post("/register", authenticateOfficer, async (req, res) => {
 	const { bus_id, number_of_seat, password, username } = req.body;
 
@@ -86,14 +91,24 @@ router.post("/driver/status", authenticateDriver, async (req, res) => {
 		return res.json({ message: error.message });
 	}
 });
-router.post("/ticket/verify/:code", authenticateDriver, async (req, res) => {
+router.get("/ticket/verify/:code", authenticateDriver, async (req, res) => {
 	const code = req.params.code;
 	try {
 		const bus = await Bus.findById(req.data.id);
 		const verified = bus.booked_seat.filter((item) => item.code == code);
 		// return res.json(verified);
 		if (verified != 0) {
-			return res.json(verified[0]);
+			const user = await User.findById(verified[0].student_id);
+			console.log(user);
+			return res.json({
+				seat: verified[0].seat,
+				code: verified[0].code,
+				matric_number: user.matric_number,
+				destination: bus.destination,
+				departure_time: dayjs(bus.departure_time)
+					.tz("Africa/Lagos")
+					.format("hh:mm A"),
+			});
 		}
 		return res.status(404).json({ message: "Not Found" });
 	} catch (error) {

@@ -7,6 +7,8 @@ import { useHistory } from "react-router-dom";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+
+import empty from "./assets/empty.svg";
 // import { usePaystackPayment } from "react-paystack";
 // import Swal from "sweetalert2";
 import Pay from "./Pay";
@@ -193,48 +195,66 @@ export default function UserDashboard({
 				!booked ? (
 					<>
 						<div className="home">
-							{Array.isArray(bus)
-								? bus.map((item, index) => (
-										<div className="dashboard-div" key={index}>
-											<div
-												style={{
-													height: "150px",
-													width: "150px",
-													borderRadius: "50%",
-													background: "#b3f1cb",
-													display: "flex",
-													flexDirection: "column",
-													alignItems: "center",
-													justifyContent: "center",
-												}}
-												className=""
-											>
-												<FontAwesomeIcon
-													icon={faBus}
-													size="lg"
-													style={{ color: "#50c878" }}
-												/>
-												<b style={{ color: "#fff", fontSize: "2rem" }}>
-													0{item.bus_id}
-												</b>
-											</div>
-
-											{/* <div>Bus 0{item.bus_id}</div> */}
-											<p style={{ fontFamily: "arapey", color: "#444" }}>
-												Departure Time:{" "}
-												{item.departure_time
-													? (() => departureTime(item.departure_time))()
-													: null}
-											</p>
-											<button
-												className="button book"
-												onClick={() => book(item.bus_id)}
-											>
-												Book
-											</button>
+							{Array.isArray(bus) && bus.length !== 0 ? (
+								bus.map((item, index) => (
+									<div className="dashboard-div" key={index}>
+										<div
+											style={{
+												height: "150px",
+												width: "150px",
+												borderRadius: "50%",
+												background: "#b3f1cb",
+												display: "flex",
+												flexDirection: "column",
+												alignItems: "center",
+												justifyContent: "center",
+											}}
+											className=""
+										>
+											<FontAwesomeIcon
+												icon={faBus}
+												size="lg"
+												style={{ color: "#50c878" }}
+											/>
+											<b style={{ color: "#fff", fontSize: "2rem" }}>
+												0{item.bus_id}
+											</b>
 										</div>
-								  ))
-								: null}
+
+										{/* <div>Bus 0{item.bus_id}</div> */}
+										<p style={{ fontFamily: "arapey", color: "#444" }}>
+											Departure Time:{" "}
+											{item.departure_time
+												? (() => departureTime(item.departure_time))()
+												: null}
+										</p>
+										<button
+											className="button book"
+											onClick={() => book(item.bus_id)}
+										>
+											Book
+										</button>
+									</div>
+								))
+							) : (
+								<div style={{ width: "100%" }}>
+									<p style={{ fontSize: "20px" }}>
+										Sorry we couldn't find any Bus going to the{" "}
+										{active ? "Hostel" : "Campus"}
+									</p>
+									<img
+										src={empty}
+										alt="No Data"
+										style={{
+											width: "100%",
+											// height: "60vh",
+											border: "none",
+											colorAdjust: "#000",
+											outline: "none",
+										}}
+									/>
+								</div>
+							)}
 						</div>
 					</>
 				) : (

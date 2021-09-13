@@ -75,6 +75,16 @@ export default function DriverLogin({ loading }) {
 					// position: "relative",
 				}}
 			>
+				<div
+					style={{
+						fontSize: "25px",
+						color: "#444",
+						fontFamily: "Arapey",
+						marginBottom: "5px",
+					}}
+				>
+					Login
+				</div>
 				<input
 					type="text"
 					className="input"
