@@ -9,23 +9,23 @@ const authenticateDriver = require("../auth/driverAuth");
 const Bus = require("../models/transportUnit");
 const { syncBuiltinESMExports } = require("module");
 router.post("/register", authenticateOfficer, async (req, res) => {
-	const { bus_id, number_of_seat } = req.body;
+	const { bus_id, number_of_seat, password, username } = req.body;
 
 	try {
-		if (await Bus.findOne({ bus_id })) {
-			return res.sendStatus(403);
+		if ((await Bus.findOne({ bus_id })) || (await Bus.findOne({ username }))) {
+			return res.sendStatus(400);
 		}
-		const driver_id = await crypto.randomBytes(3).toString("hex");
-		const hashed_id = await bcrypt.hash(driver_id, 10);
-		const bus = await new Bus({ bus_id, driver_id: hashed_id, number_of_seat });
+		// const driver_id = await crypto.randomBytes(3).toString("hex");
+		const hashedPassword = await bcrypt.hash(password, 10);
+		const bus = await new Bus({
+			bus_id,
+			password: hashedPassword,
+			number_of_seat,
+			username,
+		});
 
 		const newBus = bus.save();
-		const token = jwt.sign({ bus_id }, process.env.DRIVER_SECRET, {
-			expiresIn: "1h",
-		});
-		return res
-			.status(201)
-			.json({ message: "Bus registered successfully", token, driver_id });
+		return res.status(201).json({ message: "Bus registered successfully" });
 	} catch (error) {
 		return res.json({ message: error.message });
 	}
@@ -46,10 +46,10 @@ router.post("/officer/login", (req, res) => {
 	}
 });
 router.post("/driver/login", async (req, res) => {
-	const { bus_id, driver_id } = req.body;
+	const { username, password } = req.body;
 	try {
-		const bus = await Bus.findOne({ bus_id });
-		const verified = await bcrypt.compare(driver_id, bus.driver_id);
+		const bus = await Bus.findOne({ username: username.toLowerCase() });
+		const verified = await bcrypt.compare(password, bus.password);
 		if (verified) {
 			const token = jwt.sign({ id: bus._id }, process.env.DRIVER_SECRET, {
 				expiresIn: "1h",

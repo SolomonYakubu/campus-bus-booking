@@ -5,10 +5,14 @@ const busSchema = mongoose.Schema({
 		type: Number,
 		required: true,
 	},
+	username: {
+		type: String,
+		required: true,
+	},
 	destination: {
 		type: String,
 	},
-	driver_id: {
+	password: {
 		type: String,
 		unique: true,
 	},
@@ -21,6 +25,8 @@ const busSchema = mongoose.Schema({
 		{
 			seat: Number,
 			code: String,
+			student_id: String,
+			departure_time: Date,
 		},
 	],
 

@@ -28,6 +28,8 @@ export default function Ticket() {
 				<div>Ticket ID: {ticket.code}</div>
 				<div>Bus ID: {ticket.bus_id}</div>
 				<div>Seat: {ticket.seat}</div>
+				<div>Destination: {ticket.destination}</div>
+				<div>Departure Time: {ticket.departure_time}</div>
 				{ticket.code ? <QRCode value={ticket.code} /> : null}
 			</div>
 		</div>

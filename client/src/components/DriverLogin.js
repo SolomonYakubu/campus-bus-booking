@@ -3,22 +3,22 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import { toast, ToastContainer } from "react-toastify";
 export default function DriverLogin({ loading }) {
-	const [busId, setBusId] = useState("");
-	const [driverId, setDriverId] = useState("");
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
 	const [isLoginEmpty, setIsLoginEmpty] = useState(true);
 	const history = useHistory();
 	useEffect(() => {
-		if (busId !== "" && driverId !== "") {
+		if (username !== "" && password !== "") {
 			setIsLoginEmpty(false);
 		} else {
 			setIsLoginEmpty(true);
 		}
-	}, [busId, driverId]);
-	const onBusIdChange = (val) => {
-		setBusId(val);
+	}, [username, password]);
+	const onPasswordChange = (val) => {
+		setPassword(val);
 	};
-	const onDriverIdChange = (val) => {
-		setDriverId(val);
+	const onUsernameChange = (val) => {
+		setUsername(val);
 	};
 	const login = async () => {
 		loading(true);
@@ -26,8 +26,8 @@ export default function DriverLogin({ loading }) {
 			const response = await axios.post(
 				"http://192.168.43.244:8000/bus/driver/login",
 				{
-					bus_id: busId,
-					driver_id: driverId,
+					username,
+					password,
 				}
 			);
 			if (response.status === 200) {
@@ -78,17 +78,17 @@ export default function DriverLogin({ loading }) {
 				<input
 					type="text"
 					className="input"
-					value={busId}
-					onChange={(e) => onBusIdChange(e.target.value)}
-					placeholder="Bus ID"
+					value={username}
+					onChange={(e) => onUsernameChange(e.target.value)}
+					placeholder="Username"
 					required
 				/>
 				<input
 					type="password"
 					className="input"
-					value={driverId}
-					onChange={(e) => onDriverIdChange(e.target.value)}
-					placeholder="Driver ID"
+					value={password}
+					onChange={(e) => onPasswordChange(e.target.value)}
+					placeholder="password"
 					required
 				/>
 				<button

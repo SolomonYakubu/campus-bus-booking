@@ -7,7 +7,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Ticket from "./Ticket";
 import { useHistory } from "react-router-dom";
 import pay from "./assets/pay.svg";
-
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 const data = localStorage.getItem("data")
 	? JSON.parse(localStorage.getItem("data"))
 	: "";
@@ -19,6 +21,12 @@ const config = {
 };
 
 const Options = ({ handleChange, loading }) => {
+	const departureTime = (val) => {
+		dayjs.extend(utc);
+		dayjs.extend(timezone);
+		return dayjs(val).tz("Africa/Lagos").format("hh:mm A");
+	};
+
 	const token = localStorage.getItem("token");
 	const onSuccess = (reference) => {
 		loading(true);
@@ -38,7 +46,17 @@ const Options = ({ handleChange, loading }) => {
 				loading(false);
 
 				localStorage.removeItem("bus_id");
-				localStorage.setItem("ticket", JSON.stringify(response.data));
+				localStorage.setItem(
+					"ticket",
+					JSON.stringify({
+						bus_id: response.data.bus_id,
+						code: response.data.code,
+						seat: response.data.seat,
+						destination: response.data.destination,
+						departure_time: (() =>
+							departureTime(response.data.departure_time))(),
+					})
+				);
 				handleChange("ticket");
 			} catch (error) {
 				loading(false);
@@ -119,7 +137,14 @@ const Options = ({ handleChange, loading }) => {
 										localStorage.removeItem("bus_id");
 										localStorage.setItem(
 											"ticket",
-											JSON.stringify(response.data)
+											JSON.stringify({
+												bus_id: response.data.bus_id,
+												code: response.data.code,
+												seat: response.data.seat,
+												destination: response.data.destination,
+												departure_time: (() =>
+													departureTime(response.data.departure_time))(),
+											})
 										);
 										toast.success("Payment Successful");
 										handleChange("ticket");

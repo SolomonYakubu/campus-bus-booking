@@ -16,14 +16,6 @@ const userSchema = mongoose.Schema({
 	history: {
 		type: Array,
 	},
-	card_details: [
-		{
-			name: String,
-			card_no: Number,
-			cvv: Number,
-			expiry: String,
-		},
-	],
 	password: {
 		type: String,
 		required: true,
@@ -31,6 +23,24 @@ const userSchema = mongoose.Schema({
 	wallet: {
 		type: Number,
 		default: 0,
+	},
+	booked: {
+		hostel: {
+			bus_id: Number,
+			departure_time: Date,
+			destination: {
+				type: String,
+				default: "Hostel",
+			},
+		},
+		campus: {
+			bus_id: Number,
+			departure_time: Date,
+			destination: {
+				type: String,
+				default: "Campus",
+			},
+		},
 	},
 });
 

@@ -10,6 +10,7 @@ import Loader from "./components/Loader";
 import Book from "./components/Book";
 import DriverLogin from "./components/DriverLogin";
 import DriverDashboard from "./components/DriverDashboard";
+import Ticket from "./components/Ticket";
 
 import Swal from "sweetalert2";
 import UserDashboard from "./components/UserDashboard";
@@ -87,6 +88,9 @@ function App() {
 							</Route>
 							<Route exact path="/driver/dashboard">
 								<DriverDashboard loading={loading} />
+							</Route>
+							<Route exact path="/user/ticket">
+								<Ticket loading={loading} />
 							</Route>
 						</Switch>
 					</section>

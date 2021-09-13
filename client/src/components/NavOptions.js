@@ -61,7 +61,7 @@ const NavOptions = ({ showNavbar, setShowNavbar, fundWallet }) => {
 						<button className="button green" onClick={() => fundWallet()}>
 							Fund Wallet
 						</button>
-						<button className="button green">Ticket</button>
+						{/* <button className="button green">Ticket</button> */}
 						<button
 							className="button red"
 							onClick={() => {

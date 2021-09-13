@@ -185,12 +185,15 @@ export default function UserLogin({ loading }) {
 			return;
 		}
 		try {
-			const response = await axios.post("http://localhost:8000/user/register", {
-				name,
-				email,
-				password,
-				matric_number: matric,
-			});
+			const response = await axios.post(
+				"http://192.168.43.244:8000/user/register",
+				{
+					name,
+					email,
+					password,
+					matric_number: matric,
+				}
+			);
 			if (response.status === 201) {
 				toast.success("Account Created Successfully");
 				setActive(true);

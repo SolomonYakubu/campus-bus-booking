@@ -6,6 +6,11 @@ const axios = require("axios");
 const crypto = require("crypto");
 const User = require("../models/user");
 const Bus = require("../models/transportUnit");
+const dayjs = require("dayjs");
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
+dayjs.extend(utc);
+dayjs.extend(timezone);
 const authenticateUser = require("../auth/userAuth");
 const { resourceLimits } = require("worker_threads");
 
@@ -21,10 +26,10 @@ router.get("/", authenticateUser, async (req, res) => {
 			name: user.name,
 			email: user.email,
 			matric_number: user.matric_number,
-			buses: availableBuses.map((item) => ({
-				bus_id: item.bus_id,
-				departure_time: item.departure_time,
-			})),
+			// buses: availableBuses.map((item) => ({
+			// 	bus_id: item.bus_id,
+			// 	departure_time: item.departure_time,
+			// })),
 			wallet: user.wallet,
 		};
 
@@ -89,7 +94,35 @@ router.get("/bus/:destination", authenticateUser, async (req, res) => {
 	const { destination } = req.params;
 	try {
 		const bus = await Bus.find();
+		const user = await User.findById(req.data.id);
 		const availableBuses = bus.filter((item) => item.available);
+		if (destination == "Hostel") {
+			if (
+				dayjs(user.booked.hostel.departure_time).tz("Africa/Lagos") >
+				dayjs(dayjs()).tz("Africa/Lagos")
+			) {
+				const bus = await Bus.findOne({ bus_id: user.booked.hostel.bus_id });
+				const ticket = bus.booked_seat.filter(
+					(item) => item.student_id == req.data.id
+				)[0];
+
+				return res.json({ hostel: user.booked.hostel, ticket });
+			}
+		}
+		if (destination == "Campus") {
+			if (
+				dayjs(user.booked.campus.departure_time).tz("Africa/Lagos") >
+				dayjs(dayjs()).tz("Africa/Lagos")
+			) {
+				const bus = await Bus.findOne({ bus_id: user.booked.campus.bus_id });
+				const ticket = bus.booked_seat.filter(
+					(item) => item.student_id == req.data.id
+				)[0];
+
+				return res.json({ campus: user.booked.campus, ticket });
+			}
+		}
+
 		const availableBusesDestination = availableBuses.filter(
 			(item) => item.destination == destination
 		);
@@ -110,11 +143,17 @@ router.post("/book/:id", authenticateUser, async (req, res) => {
 	const book = async () => {
 		try {
 			const bus = await Bus.findOne({ bus_id });
+			const user = await User.findById(req.data.id);
 			const code = crypto.randomBytes(2).toString("hex");
 			const seat = bus.booked_seat.length + 1;
+			const departure_time = bus.departure_time;
+			const destination = bus.destination;
 			bus.booked_seat.push({
 				seat,
 				code,
+				student_id: req.data.id,
+				departure_time,
+				destination,
 			});
 
 			if (bus.booked_seat.length == bus.number_of_seat) {
@@ -123,8 +162,31 @@ router.post("/book/:id", authenticateUser, async (req, res) => {
 				// return res.json({ bus_id, seat, code });
 				// return res.json({ message: "No more seats" });
 			}
+			if (destination == "Hostel") {
+				await user.updateOne({
+					booked: {
+						campus: user.booked.campus,
+						hostel: {
+							bus_id,
+							departure_time,
+						},
+					},
+				});
+			}
+			if (destination == "Campus") {
+				await user.updateOne({
+					booked: {
+						hostel: user.booked.hostel,
+						campus: {
+							bus_id,
+							departure_time,
+						},
+					},
+				});
+			}
+
 			await bus.save();
-			return res.json({ bus_id, seat, code });
+			return res.json({ bus_id, seat, code, departure_time, destination });
 		} catch (error) {
 			return res.json({ message: error.message });
 		}
