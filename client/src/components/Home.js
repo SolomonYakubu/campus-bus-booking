@@ -54,7 +54,10 @@ export default function Home() {
 							outline: "none",
 						}}
 					/>
-					<button className="button home-btn">
+					<button
+						className="button home-btn"
+						onClick={() => history.push("/driver")}
+					>
 						<FontAwesomeIcon icon={faArrowRight} />
 					</button>
 				</div>

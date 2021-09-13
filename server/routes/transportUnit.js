@@ -54,27 +54,34 @@ router.post("/driver/login", async (req, res) => {
 			const token = jwt.sign({ id: bus._id }, process.env.DRIVER_SECRET, {
 				expiresIn: "1h",
 			});
-			return res.status(201).json({ message: "Logged in successfully", token });
+			return res.status(200).json({ token });
 		}
-		return res.sendStatus(403);
+		return res.sendStatus(400);
 	} catch (error) {
 		res.json({ message: error.message });
 	}
 });
 router.post("/driver/status", authenticateDriver, async (req, res) => {
 	const bus_id = req.data.id;
-	const available = req.body.available;
+	// const available = req.body.available;
 	const destination = req.body.destination;
 	const departure_time = req.body.departure_time;
+	if (!destination || !departure_time) {
+		res.sendStatus(400);
+	}
 	try {
 		const bus = await Bus.findById(bus_id);
+		if (bus.available) {
+			return res.sendStatus(400);
+		}
 		await bus.updateOne({
-			available,
+			available: true,
 			destination,
 			departure_time,
+			booked_seat: [],
 		});
 		await bus.save();
-		return res.sendStatus(200);
+		return res.sendStatus(201);
 	} catch (error) {
 		return res.json({ message: error.message });
 	}

@@ -5,37 +5,22 @@ import { faBus } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 // import { usePaystackPayment } from "react-paystack";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import Pay from "./Pay";
 
-export default function UserDashboard({ loading }) {
+export default function UserDashboard({
+	loading,
+	setWallet,
+	fund,
+	setFund,
+	amount,
+}) {
 	const token = localStorage.getItem("token");
-	const [data, setData] = useState({});
+	// const [data, setData] = useState({});
 	const [bus, setBus] = useState([]);
 	const [active, setActive] = useState(true);
-	const [amount, setAmount] = useState(0);
-	const [fund, setFund] = useState(false);
-
-	const fundWallet = () => {
-		Swal.fire({
-			title: "Enter Amount",
-			input: "number",
-			inputAttributes: {
-				autocapitalize: "off",
-			},
-			showCancelButton: true,
-			confirmButtonText: "Fund wallet",
-			showLoaderOnConfirm: true,
-			preConfirm: (amount) => {
-				setAmount(amount * 100);
-			},
-			allowOutsideClick: () => !Swal.isLoading(),
-		}).then((result) => {
-			if (result.isConfirmed) {
-				setFund(true);
-			}
-		});
-	};
+	// const [amount, setAmount] = useState(0);
+	// const [fund, setFund] = useState(false);
 
 	const history = useHistory();
 	const getData = useCallback(async () => {
@@ -57,8 +42,9 @@ export default function UserDashboard({ loading }) {
 				"data",
 				JSON.stringify({ name, email, matric_number })
 			);
-			setData(response.data);
+			// setData(response.data);
 			setBus(response.data.buses);
+			setWallet(response.data.wallet);
 			loading(false);
 		} catch (error) {
 			loading(false);
@@ -73,7 +59,7 @@ export default function UserDashboard({ loading }) {
 					toast.error("Network Error");
 			}
 		}
-	}, [token, loading, history]);
+	}, [token, loading, history, setWallet]);
 
 	useEffect(() => {
 		getData();
@@ -85,7 +71,7 @@ export default function UserDashboard({ loading }) {
 		if (val === "hostel") {
 			try {
 				const response = await axios.get(
-					"http://192.168.43.244:8000/user/bus/HtoC",
+					"http://192.168.43.244:8000/user/bus/Hostel",
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,
@@ -104,7 +90,7 @@ export default function UserDashboard({ loading }) {
 		} else {
 			try {
 				const response = await axios.get(
-					"http://192.168.43.244:8000/user/bus/CtoH",
+					"http://192.168.43.244:8000/user/bus/Campus",
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,
@@ -133,35 +119,50 @@ export default function UserDashboard({ loading }) {
 		>
 			{!fund ? (
 				<>
-					<div
+					{/* <div
 						style={{
 							display: "flex",
 							// width: "90%",
 							flexDirection: "column",
 							justifyContent: "center",
 							alignItems: "center",
-							alignSelf: "flex-end",
-							marginRight: "30px",
-							backgroundColor: "#fff",
+							alignSelf: "flex-start",
+							marginLeft: "20px",
+							// backgroundColor: "#fff",
+							borderStyle: "solid",
+							borderColor: "grey",
+							borderWidth: "0.5px",
 							padding: "10px",
+							borderRadius: "5px",
 						}}
 					>
-						<div className="" style={{ color: "#444" }}>
+						<div
+							className=""
+							style={{
+								color: "#444",
+								fontSize: "20px",
+								fontFamily: "Arapey",
+								fontWeight: "400",
+								marginBottom: "20px",
+								// backgroundColor: "#fff",
+							}}
+						>
 							Wallet: &#8358;{data.wallet}
 						</div>
 						<button
-							className="wallet button blue"
+							className="wallet button green"
 							style={{
 								fontSize: "16px",
 								fontWeight: "lighter",
-								alignSelf: "flex-start",
+								alignSelf: "center",
 								margin: 0,
+								width: "100%",
 							}}
 							onClick={fundWallet}
 						>
 							Fund Wallet
 						</button>
-					</div>
+					</div> */}
 					<div
 						style={{
 							fontSize: "22px",
@@ -174,8 +175,8 @@ export default function UserDashboard({ loading }) {
 					<div
 						style={{
 							display: "flex",
-							// alignSelf: "flex-end",
-							// marginRight: "20px",
+							alignSelf: "flex-end",
+							marginRight: "20px",
 							background: "#fff",
 							borderRadius: "47%",
 						}}
@@ -244,7 +245,7 @@ const roundButtonActive = {
 	height: "50px",
 	width: "50px",
 	borderRadius: "50%",
-	background: "rgb(235, 50, 189)",
+	background: "rgb(247, 10, 187)",
 	display: "flex",
 	flexDirection: "column",
 	alignItems: "center",

@@ -14,7 +14,7 @@ router.get("/", authenticateUser, async (req, res) => {
 		const user = await User.findById(req.data.id);
 		const bus = await Bus.find();
 		const availableBuses = bus.filter(
-			(item) => item.available && item.destination == "HtoC"
+			(item) => item.available && item.destination == "Hostel"
 		);
 
 		const data = {

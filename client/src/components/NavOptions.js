@@ -2,7 +2,7 @@ import profile from "./assets/profile.svg";
 import signin from "./assets/signin.svg";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
-const NavOptions = ({ showNavbar, setShowNavbar }) => {
+const NavOptions = ({ showNavbar, setShowNavbar, fundWallet }) => {
 	const { name, matric_number, email } = localStorage.getItem("data")
 		? JSON.parse(localStorage.getItem("data"))
 		: "";
@@ -58,6 +58,9 @@ const NavOptions = ({ showNavbar, setShowNavbar }) => {
 							justifyContent: "center",
 						}}
 					>
+						<button className="button green" onClick={() => fundWallet()}>
+							Fund Wallet
+						</button>
 						<button className="button green">Ticket</button>
 						<button
 							className="button red"
@@ -73,6 +76,7 @@ const NavOptions = ({ showNavbar, setShowNavbar }) => {
 										setShowNavbar(false);
 										history.push("/");
 										localStorage.removeItem("token");
+										window.location.reload();
 									}
 								});
 							}}

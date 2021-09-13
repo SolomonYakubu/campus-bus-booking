@@ -6,7 +6,7 @@ dayjs.extend(timezone);
 
 dayjs.tz("2014-06-01 12:00", "America/New_York");
 
-dayjs("2014-06-01 12:00").tz("America/New_York");
+dayjs("2021-09-13T06:00:00.000+00:00").tz("Africa/Lagos");
 
 dayjs.tz.guess();
 
@@ -16,3 +16,4 @@ const { $H, $m, $W } = dayjs(dayjs()).tz("Africa/Lagos");
 console.log(`${$H}:${$m}`);
 // console.log(dayjs());
 console.log(dayjs.en.weekdays[$W]);
+console.log(dayjs("2021-09-13T06:00:00.000+00:00").tz("Africa/Lagos"));

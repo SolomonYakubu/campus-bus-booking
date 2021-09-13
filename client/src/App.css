@@ -146,6 +146,7 @@ header {
 	padding: 10px;
 	/* font-weight: bold; */
 	border-radius: 5px;
+	/* color: rgb(247, 10, 187); */
 }
 .book {
 	background-color: #50c878;
@@ -207,6 +208,18 @@ form {
 }
 .nav-icon {
 	color: #fff;
+}
+.dropdown {
+	background-color: #fff;
+	font-size: 22px;
+}
+.input.flatpickr {
+	font-family: arapey;
+	background-color: #fff;
+	font-size: 22px;
+	color: #444;
+	width: 100%;
+	align-self: center;
 }
 @media (min-width: 600px) {
 	footer {
