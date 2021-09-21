@@ -12,7 +12,7 @@ export default function UserLogin({ loading }) {
 	const [name, setName] = useState("");
 	const [matric, setMatric] = useState("");
 	const [email, setEmail] = useState("");
-	const [active, setActive] = useState(true);
+	const [loginActive, setLoginActive] = useState(true);
 	const [isLoginEmpty, setisLoginEmpty] = useState(true);
 	const [isSignUpEmpty, setisSignUpEmpty] = useState(true);
 	const history = useHistory();
@@ -95,7 +95,7 @@ export default function UserLogin({ loading }) {
 			const response = await signUpHook();
 			if (response.status === 201) {
 				toast.success("Account created Successfully", { autoClose: 1000 });
-				setActive(true);
+				setLoginActive(true);
 			}
 		} catch (error) {
 			switch (error.message) {
@@ -114,103 +114,117 @@ export default function UserLogin({ loading }) {
 
 	return (
 		<>
+			<ToastContainer />
 			<div
 				className="container"
-				style={{
-					display: "flex",
-					flexDirection: "column",
-					justifyContent: "center",
-
-					alignItems: "center",
-
-					width: "100vw",
-					height: "37rem",
-					alignSelf: "center",
-				}}
+				style={
+					{
+						// 	display: "flex",
+						// 	flexDirection: "column",
+						// 	justifyContent: "center",
+						// 	alignItems: "center",
+						// 	width: "100vw",
+						// height: "37rem",
+						// alignSelf: "center",
+						// 	// paddingTop: "80px",
+					}
+				}
 			>
-				<ToastContainer />
-				<form
-					style={{
-						display: "flex",
-						flexDirection: "column",
-						alignItems: "center",
-						justifyContent: "center",
-						background: "#fff",
-						padding: "20px",
-						paddingTop: 0,
-						// width: "90%",
-						alignSelf: "center",
-						borderRadius: "5px",
-						boxShadow: "1px 10px 10px grey",
-						margin: "auto",
-						// position: "relative",
-					}}
-				>
-					<div
+				<div style={{ width: "100%" }}>
+					<h3
 						style={{
-							display: "flex",
-							flexDirection: "row",
-							justifyContent: "space-between",
-							width: "auto",
-							alignSelf: "flex-end",
-							marginTop: 0,
-							marginBottom: "10px",
-							background: "#f4f4f4",
-							height: "fit-content",
-							padding: 0,
+							color: "#444",
+
+							fontFamily: "Buenard",
+							fontSize: "24px",
+							fontWeight: "lighter",
 						}}
 					>
-						<button
-							className="button user-login"
+						{loginActive ? "Login" : "Sign Up"}
+					</h3>
+					<form
+						style={{
+							display: "flex",
+							flexDirection: "column",
+							alignItems: "center",
+							justifyContent: "center",
+							background: "#fff",
+							padding: "20px",
+							paddingTop: 0,
+							// width: "90%",
+							alignSelf: "center",
+							borderRadius: "5px",
+							// boxShadow: "1px 10px 10px grey",
+							margin: "auto",
+							// position: "relative",
+						}}
+					>
+						<div
 							style={{
-								borderTopStyle: active ? "solid" : "none",
-								borderWidth: "3px",
-								borderColor: "#50c878",
-								background: active ? "#fff" : "#f4f4f4 ",
-								opacity: active ? "1" : "0.5",
-							}}
-							onClick={() => setActive(true)}
-						>
-							Login
-						</button>
-						<button
-							className="button user-login"
-							onClick={() => setActive(false)}
-							style={{
-								borderTopStyle: !active ? "solid" : "none",
-								borderWidth: "3px",
-								borderColor: "#50c878",
-								background: !active ? "#fff" : "#f4f4f4 ",
-								opacity: !active ? "1" : "0.5",
+								display: "flex",
+								flexDirection: "row",
+								justifyContent: "space-between",
+								width: "auto",
+								alignSelf: "flex-end",
+								marginTop: 0,
+								marginBottom: "10px",
+								background: "#f4f4f4",
+								height: "fit-content",
+								padding: 0,
 							}}
 						>
-							Sign Up
-						</button>
-					</div>
-					{active ? (
-						<Login
-							id={id}
-							password={password}
-							setId={setId}
-							setPassword={setPassword}
-							login={login}
-							isLoginEmpty={isLoginEmpty}
-						/>
-					) : (
-						<SignUp
-							name={name}
-							matric={matric}
-							password={password}
-							email={email}
-							setName={setName}
-							setEmail={setEmail}
-							setMatric={setMatric}
-							setPassword={setPassword}
-							signUp={signUp}
-							isSignUpEmpty={isSignUpEmpty}
-						/>
-					)}
-				</form>
+							<button
+								className="button user-login"
+								style={{
+									borderTopStyle: loginActive ? "solid" : "none",
+									borderWidth: "3px",
+									borderColor: "#50c878",
+									background: loginActive ? "#fff" : "#f4f4f4 ",
+									opacity: loginActive ? "1" : "0.5",
+								}}
+								onClick={() => setLoginActive(true)}
+							>
+								Login
+							</button>
+							<button
+								className="button user-login"
+								onClick={() => setLoginActive(false)}
+								style={{
+									borderTopStyle: !loginActive ? "solid" : "none",
+									borderWidth: "3px",
+									borderColor: "#50c878",
+									background: !loginActive ? "#fff" : "#f4f4f4 ",
+									opacity: !loginActive ? "1" : "0.5",
+								}}
+							>
+								Sign Up
+							</button>
+						</div>
+						{loginActive ? (
+							<Login
+								id={id}
+								password={password}
+								setId={setId}
+								setPassword={setPassword}
+								login={login}
+								isLoginEmpty={isLoginEmpty}
+							/>
+						) : (
+							<SignUp
+								name={name}
+								matric={matric}
+								password={password}
+								email={email}
+								setName={setName}
+								setEmail={setEmail}
+								setMatric={setMatric}
+								setPassword={setPassword}
+								signUp={signUp}
+								isSignUpEmpty={isSignUpEmpty}
+							/>
+						)}
+					</form>
+				</div>
 			</div>
 		</>
 	);

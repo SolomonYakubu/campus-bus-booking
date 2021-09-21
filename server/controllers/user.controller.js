@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const jwtToken = require("../functions/jwt");
 const axios = require("axios");
 const crypto = require("crypto");
 const User = require("../models/userModel");
@@ -6,6 +6,7 @@ const Bus = require("../models/transportUnitModel");
 const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
 const timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
+const { userSecretKey } = require("../config/config");
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -77,9 +78,7 @@ const loginUser = async (req, res) => {
 			user = await User.findOne({ matric_number: id });
 		}
 		if (user && (await user.matchPassword(password))) {
-			token = jwt.sign({ id: user._id }, process.env.USER_SECRET, {
-				expiresIn: "30m",
-			});
+			token = await jwtToken({ id: user._id }, userSecretKey);
 			return res.json(token);
 		}
 		return res.sendStatus(400);

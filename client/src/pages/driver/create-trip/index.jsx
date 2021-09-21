@@ -3,6 +3,7 @@ import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/dark.css";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import { useHistory } from "react-router";
 // import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import useQuery from "../../../hooks/useQuery";
@@ -10,6 +11,7 @@ export default function NewTrip({ loading }) {
 	const [date, setDate] = useState(new Date(Date.now()));
 	const [destination, setDestination] = useState("Hostel");
 	// const token = localStorage.getItem("driverToken");
+	const history = useHistory();
 	const onDropChange = useCallback((e) => {
 		const value = e.label;
 		setDestination((destination) => value);
@@ -42,11 +44,17 @@ export default function NewTrip({ loading }) {
 						hideProgressBar: "false",
 					});
 					break;
+
+				case "401":
+					toast.error("Session Expired");
+					history.push("/driver");
+					localStorage.clear();
+					break;
 				default:
-					toast.error("Network Error");
+					toast.error("An error occured");
 			}
 		}
-	}, [newTrip]);
+	}, [history, newTrip]);
 	useEffect(() => {
 		if (destination === "" || date === "") {
 			toast.error("Fill out all fields");

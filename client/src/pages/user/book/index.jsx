@@ -28,7 +28,7 @@ const Options = ({ handleChange, loading }) => {
 		dayjs.extend(timezone);
 		return dayjs(val).tz("Africa/Lagos").format("hh:mm A");
 	};
-
+	const history = useHistory();
 	const token = localStorage.getItem("token");
 	const [reference, setReference] = useState("");
 	const bookTicket = useQuery(
@@ -66,8 +66,14 @@ const Options = ({ handleChange, loading }) => {
 					case "400":
 						toast.error("Something went wrong");
 						break;
+
+					case "401":
+						toast.error("Session Expired");
+						history.push("/user");
+						localStorage.clear();
+						break;
 					default:
-						toast.error("Network Error");
+						toast.error("An error occured");
 				}
 			}
 		};

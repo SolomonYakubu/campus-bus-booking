@@ -62,10 +62,18 @@ export default function UserDashboard({
 					}
 				}
 			} catch (error) {
-				toast.error("An error occured");
+				switch (error.message) {
+					case "401":
+						toast.error("Session Expired");
+						history.push("/user");
+						localStorage.clear();
+						break;
+					default:
+						toast.error("An error occured");
+				}
 			}
 		},
-		[getCampusBuses, getHostelBuses]
+		[getCampusBuses, getHostelBuses, history]
 	);
 	const getData = useCallback(async () => {
 		try {
@@ -84,10 +92,10 @@ export default function UserDashboard({
 				case "401":
 					toast.error("Session Expired");
 					history.push("/user");
-					localStorage.removeItem("token");
+					localStorage.clear();
 					break;
 				default:
-					toast.error("Network Error");
+					toast.error("An error occured");
 			}
 		}
 	}, [getUserData, handleActive, setWallet, history]);
@@ -110,7 +118,7 @@ export default function UserDashboard({
 	return (
 		<div
 			className="container"
-			style={{ paddingTop: "5rem", paddingBottom: "2rem" }}
+			// style={{ paddingTop: "5rem", paddingBottom: "2rem" }}
 		>
 			<div
 				style={{

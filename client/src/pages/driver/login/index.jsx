@@ -40,10 +40,10 @@ export default function DriverLogin({ loading }) {
 		try {
 			const response = await loginHook();
 			if (response.status === 200) {
-				toast.success("Logged in successfully!!", { autoClose: 1000 });
-
-				localStorage.setItem("driverToken", response.data);
+				localStorage.setItem("driverToken", response.data.token);
+				localStorage.setItem("busId", response.data.bus_id);
 				history.push("/driver/dashboard");
+				toast.success("Logged in successfully!!", { autoClose: 1000 });
 			}
 		} catch (error) {
 			switch (error.message) {
@@ -59,7 +59,11 @@ export default function DriverLogin({ loading }) {
 			}
 		}
 	};
-
+	useEffect(() => {
+		if (localStorage.getItem("driverToken")) {
+			history.push("/driver/dashboard");
+		}
+	}, [history]);
 	return (
 		<div className="container">
 			<ToastContainer />

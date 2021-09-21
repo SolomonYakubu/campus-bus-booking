@@ -1,9 +1,9 @@
-require("dotenv").config();
-
-const jwt = require("jsonwebtoken");
-
-const bcrypt = require("bcrypt");
-
+const jwtToken = require("../functions/jwt");
+const {
+	officerPin,
+	officerSecretKey,
+	driverSecretKey,
+} = require("../config/config");
 const Bus = require("../models/transportUnitModel");
 const User = require("../models/userModel");
 var dayjs = require("dayjs");
@@ -26,16 +26,14 @@ const registerBus = async (req, res) => {
 		if ((await Bus.findOne({ bus_id })) || (await Bus.findOne({ username }))) {
 			return res.sendStatus(400);
 		}
-
-		const hashedPassword = await bcrypt.hash(password, 10);
 		const bus = await new Bus({
 			bus_id,
-			password: hashedPassword,
+			password,
 			number_of_seat,
 			username,
 		});
 
-		const newBus = bus.save();
+		await bus.save();
 		return res.status(201).json({ message: "Bus registered successfully" });
 	} catch (error) {
 		return res.json({ message: error.message });
@@ -47,14 +45,12 @@ const registerBus = async (req, res) => {
  * @route POST /bus/officer/login
  * @access Public
  */
-const officerLogin = (req, res) => {
+const officerLogin = async (req, res) => {
 	try {
 		const id = req.body.id;
 		let token;
-		if (id === process.env.TRANSPORT_OFFICER_SECRET) {
-			token = jwt.sign({ id }, process.env.OFFICER_SECRET, {
-				expiresIn: "5h",
-			});
+		if (id === officerPin) {
+			token = await jwtToken({ id }, officerSecretKey);
 			return res.json(token);
 		}
 		return res.sendStatus(401);
@@ -72,12 +68,10 @@ const driverLogin = async (req, res) => {
 	const { username, password } = req.body;
 	try {
 		const bus = await Bus.findOne({ username: username.toLowerCase() });
-		const verified = await bcrypt.compare(password, bus.password);
-		if (verified) {
-			const token = jwt.sign({ id: bus._id }, process.env.DRIVER_SECRET, {
-				expiresIn: "1h",
-			});
-			return res.status(200).json(token);
+		if (bus && (await bus.matchPassword(password))) {
+			const token = await jwtToken({ id: bus._id }, driverSecretKey);
+
+			return res.status(200).json({ token, bus_id: bus.bus_id });
 		}
 		return res.sendStatus(400);
 	} catch (error) {
@@ -129,7 +123,6 @@ const verifyTicket = async (req, res) => {
 		// return res.json(verified);
 		if (verified != 0) {
 			const user = await User.findById(verified[0].student_id);
-			console.log(user);
 			return res.json({
 				seat: verified[0].seat,
 				code: verified[0].code,
