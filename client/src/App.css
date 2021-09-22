@@ -98,10 +98,10 @@ header {
 	border-radius: 0;
 }
 .input {
-	font-family: Flamenco;
+	font-family: Arapey;
 	padding: 12px;
 	border-radius: 5px;
-	border-width: 1px;
+	border-width: 0.5px;
 	border-color: rgb(241, 241, 241);
 
 	margin: 5px;
@@ -201,6 +201,7 @@ footer {
 }
 form {
 	width: 90%;
+	font-family: Arapey;
 }
 .pay-div {
 	width: 90%;

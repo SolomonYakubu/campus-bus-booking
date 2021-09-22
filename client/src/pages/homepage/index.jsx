@@ -63,7 +63,7 @@ export default function Home() {
 						<FontAwesomeIcon icon={faArrowRight} />
 					</button> */}
 				</div>
-				<div className="home-div">
+				<div className="home-div" onClick={() => history.push("/admin")}>
 					<h3 style={{ margin: 0, marginBottom: "10px" }}>Admin</h3>
 					<img
 						src={admin}

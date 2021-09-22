@@ -12,7 +12,7 @@ import DriverLogin from "./pages/driver/login";
 import DriverDashboard from "./pages/driver/dashboard";
 import Ticket from "./components/Ticket";
 import NewTrip from "./pages/driver/create-trip";
-
+import AdminLogin from "./pages/admin/login";
 import Swal from "sweetalert2";
 import UserDashboard from "./pages/user/dashboard";
 function App() {
@@ -86,6 +86,9 @@ function App() {
 							</Route>
 							<Route exact path="/driver">
 								<DriverLogin loading={loading} />
+							</Route>
+							<Route exact path="/admin">
+								<AdminLogin loading={loading} />
 							</Route>
 							<Route exact path="/driver/dashboard">
 								<DriverDashboard loading={loading} />

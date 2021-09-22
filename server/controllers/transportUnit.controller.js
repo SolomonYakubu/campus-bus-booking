@@ -1,7 +1,7 @@
 const jwtToken = require("../functions/jwt");
 const {
-	officerPin,
-	officerSecretKey,
+	adminPin,
+	adminSecretKey,
 	driverSecretKey,
 } = require("../config/config");
 const Bus = require("../models/transportUnitModel");
@@ -41,19 +41,19 @@ const registerBus = async (req, res) => {
 };
 
 /**
- * @desc  login to officer's acccount
- * @route POST /bus/officer/login
+ * @desc  login to admin's acccount
+ * @route POST /bus/admin/login
  * @access Public
  */
-const officerLogin = async (req, res) => {
+const adminLogin = async (req, res) => {
 	try {
-		const id = req.body.id;
+		const pin = req.body.pin;
 		let token;
-		if (id === officerPin) {
-			token = await jwtToken({ id }, officerSecretKey);
+		if (pin === adminPin) {
+			token = await jwtToken({ id }, adminSecretKey);
 			return res.json(token);
 		}
-		return res.sendStatus(401);
+		return res.sendStatus(400);
 	} catch (error) {
 		return res.json({ message: error.message });
 	}
@@ -141,7 +141,7 @@ const verifyTicket = async (req, res) => {
 
 module.exports = {
 	registerBus,
-	officerLogin,
+	adminLogin,
 	driverLogin,
 	setDriverStatus,
 	verifyTicket,

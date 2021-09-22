@@ -1,7 +1,7 @@
 require("dotenv").config();
 module.exports = {
-	officerPin: process.env.OFFICER_PIN,
+	adminPin: process.env.ADMIN_PIN,
 	driverSecretKey: process.env.DRIVER_SECRET,
-	officerSecretKey: process.env.OFFICER_SECRET,
+	adminSecretKey: process.env.ADMIN_SECRET,
 	userSecretKey: process.env.USER_SECRET,
 };

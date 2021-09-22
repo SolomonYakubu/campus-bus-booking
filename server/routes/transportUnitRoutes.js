@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const authenticateOfficer = require("../middlewares/auth/transportOfficerAuth");
+const authenticateAdmin = require("../middlewares/auth/adminAuth");
 const authenticateDriver = require("../middlewares/auth/driverAuth");
 const transportUnitController = require("../controllers/transportUnit.controller");
 router.post(
 	"/register",
-	authenticateOfficer,
+	authenticateAdmin,
 	transportUnitController.registerBus
 );
-router.post("/officer/login", transportUnitController.officerLogin);
+router.post("/admin/login", transportUnitController.adminLogin);
 router.post("/driver/login", transportUnitController.driverLogin);
 router.post(
 	"/driver/status",
