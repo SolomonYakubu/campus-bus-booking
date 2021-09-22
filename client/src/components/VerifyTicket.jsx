@@ -17,7 +17,7 @@ export default function VerifyTicket({ loading }) {
 		loading(true);
 		try {
 			const response = await axios.get(
-				`http://192.168.43.244:8000/bus/ticket/verify/${val}`,
+				`http://localhost:8000/bus/ticket/verify/${val}`,
 
 				{
 					headers: {

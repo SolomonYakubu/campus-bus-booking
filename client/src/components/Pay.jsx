@@ -17,7 +17,7 @@ export default function Pay({ amount, loading, setFund }) {
 		const check = async () => {
 			try {
 				await axios.post(
-					`http://192.168.43.244:8000/user/wallet/fund`,
+					`http://localhost:8000/user/wallet/fund`,
 					{ reference_id: reference.reference },
 					{
 						headers: {

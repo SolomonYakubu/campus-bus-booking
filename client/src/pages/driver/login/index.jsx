@@ -22,7 +22,7 @@ export default function DriverLogin({ loading }) {
 	};
 	const loginHook = useQuery(
 		{
-			url: "http://192.168.43.244:8000/bus/driver/login",
+			url: "http://localhost:8000/bus/driver/login",
 			method: "post",
 			body: {
 				username,

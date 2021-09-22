@@ -16,7 +16,7 @@ export default function AdminLogin({ loading }) {
 
 	const loginHook = useQuery(
 		{
-			url: "http://192.168.43.244:8000/bus/admin/login",
+			url: "http://localhost:8000/bus/admin/login",
 			method: "post",
 			body: {
 				pin,

@@ -18,7 +18,7 @@ export default function NewTrip({ loading }) {
 	}, []);
 	const newTrip = useQuery(
 		{
-			url: "http://192.168.43.244:8000/bus/driver/status",
+			url: "http://localhost:8000/bus/driver/status",
 			method: "post",
 			body: {
 				destination,

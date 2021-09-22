@@ -6,7 +6,7 @@ const Bus = require("../models/transportUnitModel");
 const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
 const timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
-const { userSecretKey } = require("../config/config");
+const { userSecretKey, secretKey } = require("../config/config");
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -205,8 +205,7 @@ const bookBusById = async (req, res) => {
 				`https://api.paystack.co/transaction/verify/${reference_id}`,
 				{
 					headers: {
-						Authorization:
-							"Bearer sk_test_f5a685bf870d1f2fb1ed21c6f02871d401ec24af",
+						Authorization: `Bearer ${secretKey}`,
 					},
 				}
 			);
@@ -243,8 +242,7 @@ const fundUserWallet = async (req, res) => {
 			`https://api.paystack.co/transaction/verify/${reference_id}`,
 			{
 				headers: {
-					Authorization:
-						"Bearer sk_test_f5a685bf870d1f2fb1ed21c6f02871d401ec24af",
+					Authorization: `Bearer ${secretKey}`,
 				},
 			}
 		);

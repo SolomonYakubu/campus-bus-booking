@@ -3,11 +3,18 @@ const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { mongoURI } = require("./config/config");
 const userRoutes = require("./routes/userRoutes");
 const busRoutes = require("./routes/transportUnitRoutes");
+
+const mongoDBURI =
+	process.env.NODE_ENV === "development"
+		? "mongodb://localhost/bus-booking"
+		: mongoURI;
+
 mongoose.Promise = global.Promise;
 mongoose
-	.connect("mongodb://localhost/bus-booking" || process.env.MONGO_URI, {
+	.connect(mongoDBURI, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		// useFindAndModify: false,
