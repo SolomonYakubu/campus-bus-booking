@@ -79,7 +79,7 @@ export default function DriverLogin({ loading }) {
 					// width: "90%",
 					alignSelf: "center",
 					borderRadius: "5px",
-					boxShadow: "1px 10px 10px grey",
+					// boxShadow: "1px 10px 10px grey",
 					margin: "auto",
 					// position: "relative",
 				}}

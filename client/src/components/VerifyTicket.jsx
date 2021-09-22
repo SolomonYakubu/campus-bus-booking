@@ -82,7 +82,7 @@ export default function VerifyTicket({ loading }) {
 			<ToastContainer />
 
 			{!scan ? (
-				<>
+				<div className="home-div">
 					<div
 						style={{
 							fontSize: "22px",
@@ -119,7 +119,7 @@ export default function VerifyTicket({ loading }) {
 					<button className="button green" onClick={() => setScan(true)}>
 						Scan
 					</button>
-				</>
+				</div>
 			) : (
 				<>
 					<QrReader

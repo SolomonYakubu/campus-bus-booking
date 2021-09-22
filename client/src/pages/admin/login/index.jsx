@@ -35,7 +35,7 @@ export default function AdminLogin({ loading }) {
 			if (response.status === 200) {
 				// localStorage.setItem("adminToken", response.data.token);
 				console.log(response.data);
-				// history.push("/driver/dashboard");
+				history.push("/admin/dashboard");
 				toast.success("Logged in successfully!!", { autoClose: 1000 });
 			}
 		} catch (error) {
@@ -72,7 +72,7 @@ export default function AdminLogin({ loading }) {
 					// width: "90%",
 					alignSelf: "center",
 					borderRadius: "5px",
-					boxShadow: "1px 10px 10px grey",
+					// boxShadow: "1px 10px 10px grey",
 					margin: "auto",
 					// position: "relative",
 				}}

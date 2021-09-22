@@ -218,6 +218,7 @@ form {
 .dropdown {
 	background-color: #fff;
 	font-size: 22px;
+	width: 90%;
 }
 .input.flatpickr {
 	font-family: arapey;

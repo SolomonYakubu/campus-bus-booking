@@ -15,6 +15,7 @@ import NewTrip from "./pages/driver/create-trip";
 import AdminLogin from "./pages/admin/login";
 import Swal from "sweetalert2";
 import UserDashboard from "./pages/user/dashboard";
+import AdminDashboard from "./pages/admin/dashboard";
 function App() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [showNavbar, setShowNavbar] = useState(false);
@@ -89,6 +90,9 @@ function App() {
 							</Route>
 							<Route exact path="/admin">
 								<AdminLogin loading={loading} />
+							</Route>
+							<Route exact path="/admin/dashboard">
+								<AdminDashboard loading={loading} />
 							</Route>
 							<Route exact path="/driver/dashboard">
 								<DriverDashboard loading={loading} />

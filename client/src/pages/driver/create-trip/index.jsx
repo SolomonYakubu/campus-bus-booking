@@ -66,18 +66,11 @@ export default function NewTrip({ loading }) {
 			<h3 style={{ fontSize: "25px", color: "#444" }}>New Trip</h3>
 			<div
 				style={{
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "flex-start",
-					alignSelf: "center",
-					boxSizing: "border-box",
-					width: "90%",
-					backgroundColor: "#fff",
-					borderRadius: "5px",
 					fontFamily: "arapey",
-					padding: "10px",
+
 					color: "#444",
 				}}
+				className="home-div"
 			>
 				<p style={{ margin: "3px", fontSize: "22px" }}>Destination</p>
 				<Dropdown
@@ -104,10 +97,11 @@ export default function NewTrip({ loading }) {
 					onChange={(date) => {
 						setDate(date);
 					}}
+					style={{ width: "90%" }}
 				/>
 				<button
-					className="button green"
-					style={{ width: "100%" }}
+					className="button green "
+					style={{ width: "90%" }}
 					onClick={createTrip}
 				>
 					Create Trip
