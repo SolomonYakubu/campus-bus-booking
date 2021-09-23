@@ -12,8 +12,6 @@ const mongoDBURI =
 	process.env.NODE_ENV === "development"
 		? "mongodb://localhost/bus-booking"
 		: mongoURI;
-console.log(mongoDBURI);
-console.log(process.env.NODE_ENV);
 
 mongoose.Promise = global.Promise;
 mongoose
