@@ -60,7 +60,7 @@ const Options = ({ handleChange, loading }) => {
 					`https://bookbus.herokuapp.com/user/book/${localStorage.getItem(
 						"bus_id"
 					)}`,
-					{ reference_id: reference.reference },
+					{ chargeType: "bank", reference_id: reference.reference },
 					{
 						headers: {
 							Authorization: `Bearer ${localStorage.getItem("token")}`,
