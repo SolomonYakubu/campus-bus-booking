@@ -13,7 +13,7 @@ export default function DriverDashboard({ loading }) {
 			{verify ? (
 				<VerifyTicket loading={loading} />
 			) : (
-				<div className="home-div">
+				<div className="dashboard-div">
 					<button
 						className="input button green"
 						onClick={() => setVerify(true)}

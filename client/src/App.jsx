@@ -16,6 +16,8 @@ import AdminLogin from "./pages/admin/login";
 import Swal from "sweetalert2";
 import UserDashboard from "./pages/user/dashboard";
 import AdminDashboard from "./pages/admin/dashboard";
+import RegisterBus from "./pages/admin/register-bus";
+import Buses from "./pages/admin/buses";
 function App() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [showNavbar, setShowNavbar] = useState(false);
@@ -93,6 +95,12 @@ function App() {
 							</Route>
 							<Route exact path="/admin/dashboard">
 								<AdminDashboard loading={loading} />
+							</Route>
+							<Route exact path="/admin/register-bus">
+								<RegisterBus loading={loading} />
+							</Route>
+							<Route exact path="/admin/buses">
+								<Buses loading={loading} />
 							</Route>
 							<Route exact path="/driver/dashboard">
 								<DriverDashboard loading={loading} />

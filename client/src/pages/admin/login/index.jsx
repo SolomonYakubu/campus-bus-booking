@@ -33,8 +33,8 @@ export default function AdminLogin({ loading }) {
 		try {
 			const response = await loginHook();
 			if (response.status === 200) {
-				// localStorage.setItem("adminToken", response.data.token);
-				console.log(response.data);
+				localStorage.setItem("adminToken", response.data);
+
 				history.push("/admin/dashboard");
 				toast.success("Logged in successfully!!", { autoClose: 1000 });
 			}

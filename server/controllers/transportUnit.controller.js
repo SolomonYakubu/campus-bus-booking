@@ -30,7 +30,7 @@ const registerBus = async (req, res) => {
 			bus_id,
 			password,
 			number_of_seat,
-			username,
+			username: user.toLowerCase(),
 		});
 
 		await bus.save();
@@ -56,6 +56,28 @@ const adminLogin = async (req, res) => {
 		return res.sendStatus(400);
 	} catch (error) {
 		return res.json({ message: error.message });
+	}
+};
+
+/**
+ * @desc  get all bus
+ * @route GET /bus/
+ * @access Private
+ */
+
+const getBuses = async (req, res) => {
+	try {
+		const buses = await Bus.find();
+
+		return res.json(
+			buses.map((item) => ({
+				bus_id: item.bus_id,
+				username: item.username,
+				number_of_seat: item.number_of_seat,
+			}))
+		);
+	} catch (error) {
+		return res.json(error.message);
 	}
 };
 
@@ -145,4 +167,5 @@ module.exports = {
 	driverLogin,
 	setDriverStatus,
 	verifyTicket,
+	getBuses,
 };

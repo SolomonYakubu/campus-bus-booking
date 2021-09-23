@@ -3,6 +3,8 @@ const router = express.Router();
 const authenticateAdmin = require("../middlewares/auth/adminAuth");
 const authenticateDriver = require("../middlewares/auth/driverAuth");
 const transportUnitController = require("../controllers/transportUnit.controller");
+
+router.get("/", authenticateAdmin, transportUnitController.getBuses);
 router.post(
 	"/register",
 	authenticateAdmin,

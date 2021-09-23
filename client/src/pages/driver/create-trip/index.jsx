@@ -70,7 +70,7 @@ export default function NewTrip({ loading }) {
 
 					color: "#444",
 				}}
-				className="home-div"
+				className="dashboard-div"
 			>
 				<p style={{ margin: "3px", fontSize: "22px" }}>Destination</p>
 				<Dropdown

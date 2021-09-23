@@ -6,10 +6,15 @@ export default function AdminDashboard({ loading }) {
 	return (
 		<div className="container">
 			<div className="home-div">
-				<button className="input button green">Register New Bus</button>
 				<button
 					className="input button green"
-					// onClick={() => history.push("/driver/newtrip")}
+					onClick={() => history.push("/admin/register-bus")}
+				>
+					Register New Bus
+				</button>
+				<button
+					className="input button green"
+					onClick={() => history.push("/admin/buses")}
 				>
 					View Registered Busess
 				</button>

@@ -16,6 +16,9 @@ const useQuery = (option, auth, loading) => {
 				case "driver":
 					token = localStorage.getItem("driverToken");
 					break;
+				case "admin":
+					token = localStorage.getItem("adminToken");
+					break;
 				default:
 					token = "";
 			}
