@@ -16,7 +16,7 @@ export default function AdminLogin({ loading }) {
 
 	const loginHook = useQuery(
 		{
-			url: "http://localhost:8000/bus/admin/login",
+			url: "https://bookbus.herokuapp.com/bus/admin/login",
 			method: "post",
 			body: {
 				pin,

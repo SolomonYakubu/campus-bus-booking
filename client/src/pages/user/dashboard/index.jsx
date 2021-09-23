@@ -23,7 +23,7 @@ export default function UserDashboard({
 	const [booked, setBooked] = useState(false);
 	const getUserData = useQuery(
 		{
-			url: "http://localhost:8000/user",
+			url: "https://bookbus.herokuapp.com/user",
 			method: "get",
 		},
 		{ auth: true, type: "user" },
@@ -31,7 +31,7 @@ export default function UserDashboard({
 	);
 	const getHostelBuses = useQuery(
 		{
-			url: "http://localhost:8000/user/bus/Hostel",
+			url: "https://bookbus.herokuapp.com/user/bus/Hostel",
 			method: "get",
 		},
 		{ auth: true, type: "user" },
@@ -39,7 +39,7 @@ export default function UserDashboard({
 	);
 	const getCampusBuses = useQuery(
 		{
-			url: "http://localhost:8000/user/bus/Campus",
+			url: "https://bookbus.herokuapp.com/user/bus/Campus",
 			method: "get",
 		},
 		{ auth: true, type: "user" },

@@ -22,7 +22,7 @@ export default function DriverLogin({ loading }) {
 	};
 	const loginHook = useQuery(
 		{
-			url: "http://localhost:8000/bus/driver/login",
+			url: "https://bookbus.herokuapp.com/bus/driver/login",
 			method: "post",
 			body: {
 				username,

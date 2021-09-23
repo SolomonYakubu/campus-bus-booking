@@ -26,7 +26,7 @@ const useQuery = (option, auth, loading) => {
 				try {
 					loading(true);
 					const response = await axios.post(
-						// "http://localhost:8000/user/login",
+						// "user/login",
 						option.url,
 						option.body,
 						auth.auth
@@ -49,7 +49,7 @@ const useQuery = (option, auth, loading) => {
 				try {
 					loading(true);
 					const response = await axios.get(
-						// "http://localhost:8000/user/login",
+						// "user/login",
 						option.url,
 						auth.auth
 							? {

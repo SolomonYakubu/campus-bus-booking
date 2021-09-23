@@ -17,7 +17,7 @@ export default function Pay({ amount, loading, setFund }) {
 		const check = async () => {
 			try {
 				await axios.post(
-					`http://localhost:8000/user/wallet/fund`,
+					`https://bookbus.herokuapp.com/user/wallet/fund`,
 					{ reference_id: reference.reference },
 					{
 						headers: {

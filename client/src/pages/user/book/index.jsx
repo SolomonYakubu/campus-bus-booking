@@ -33,9 +33,7 @@ const Options = ({ handleChange, loading }) => {
 	const [reference, setReference] = useState("");
 	const bookTicket = useQuery(
 		{
-			url: `http://192.168.43.244:8000/user/book/${localStorage.getItem(
-				"bus_id"
-			)}`,
+			url: `http://localhost:8000/user/book/${localStorage.getItem("bus_id")}`,
 			method: "post",
 			body: { chargeType: "bank", reference_id: reference.reference },
 		},
@@ -127,9 +125,7 @@ const Options = ({ handleChange, loading }) => {
 									loading(true);
 									try {
 										const response = await axios.post(
-											`http://192.168.43.244:8000/user/book/${localStorage.getItem(
-												"bus_id"
-											)}`,
+											`user/book/${localStorage.getItem("bus_id")}`,
 											{ chargeType: "wallet" },
 											{
 												headers: {

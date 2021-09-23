@@ -48,9 +48,9 @@ const registerBus = async (req, res) => {
 const adminLogin = async (req, res) => {
 	try {
 		const pin = req.body.pin;
-		let token;
+
 		if (pin === adminPin) {
-			token = await jwtToken({ id }, adminSecretKey);
+			const token = await jwtToken({ pin }, adminSecretKey);
 			return res.json(token);
 		}
 		return res.sendStatus(400);

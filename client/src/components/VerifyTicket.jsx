@@ -17,7 +17,7 @@ export default function VerifyTicket({ loading }) {
 		loading(true);
 		try {
 			const response = await axios.get(
-				`http://localhost:8000/bus/ticket/verify/${val}`,
+				`https://bookbus.herokuapp.com/bus/ticket/verify/${val}`,
 
 				{
 					headers: {

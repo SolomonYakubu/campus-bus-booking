@@ -18,7 +18,7 @@ export default function NewTrip({ loading }) {
 	}, []);
 	const newTrip = useQuery(
 		{
-			url: "http://localhost:8000/bus/driver/status",
+			url: "https://bookbus.herokuapp.com/bus/driver/status",
 			method: "post",
 			body: {
 				destination,

@@ -38,7 +38,7 @@ export default function UserLogin({ loading }) {
 
 	const loginHook = useQuery(
 		{
-			url: "http://localhost:8000/user/login",
+			url: "https://bookbus.herokuapp.com/user/login",
 			method: "post",
 			body: { id, password },
 		},
@@ -74,7 +74,7 @@ export default function UserLogin({ loading }) {
 
 	const signUpHook = useQuery(
 		{
-			url: "http://localhost:8000/user/register",
+			url: "https://bookbus.herokuapp.com/user/register",
 			method: "post",
 			body: {
 				name,
