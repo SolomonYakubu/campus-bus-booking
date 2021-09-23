@@ -39,25 +39,35 @@ const Options = ({ handleChange, loading }) => {
 		amount: 5000,
 		publicKey: "pk_test_0a4093b99f32878ae511ab0f19d32710c16702f8",
 	};
-	const [reference, setReference] = useState("");
-	const bookTicket = useQuery(
-		{
-			url: `https://bookbus.herokuapp.com/user/book/${localStorage.getItem(
-				"bus_id"
-			)}`,
-			method: "post",
-			body: { chargeType: "bank", reference_id: reference.reference },
-		},
-		{ auth: true, type: "user" },
-		loading
-	);
+	// const [reference, setReference] = useState("");
+	// const bookTicket = useQuery(
+	// 	{
+	// 		url: `https://bookbus.herokuapp.com/user/book/${localStorage.getItem(
+	// 			"bus_id"
+	// 		)}`,
+	// 		method: "post",
+	// 		body: { chargeType: "bank", reference_id: reference.reference },
+	// 	},
+	// 	{ auth: true, type: "user" },
+	// 	loading
+	// );
 	const onSuccess = (reference) => {
-		setReference(reference);
+		// setReference(reference);
 		const check = async () => {
 			try {
-				const response = await bookTicket();
-
-				localStorage.removeItem("bus_id");
+				loading(true);
+				const response = await axios.post(
+					`https://bookbus.herokuapp.com/user/book/${localStorage.getItem(
+						"bus_id"
+					)}`,
+					{ reference_id: reference.reference },
+					{
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem("token")}`,
+						},
+					}
+				);
+				// console.log(response);
 				localStorage.setItem(
 					"ticket",
 					JSON.stringify({
@@ -69,21 +79,23 @@ const Options = ({ handleChange, loading }) => {
 							departureTime(response.data.departure_time))(),
 					})
 				);
+				loading(false);
 				handleChange("ticket");
 			} catch (error) {
-				switch (error.message) {
-					case "400":
-						toast.error("Something went wrong");
-						break;
+				// switch (error.message) {
+				// case "400":
+				// 	toast.error("Something went wrong");
+				// 	break;
 
-					case "401":
-						toast.error("Session Expired");
-						history.push("/user");
-						localStorage.clear();
-						break;
-					default:
-						toast.error("An error occured");
-				}
+				// case "401":
+				// 	toast.error("Session Expired");
+				// 	history.push("/user");
+				// 	localStorage.clear();
+				// 	break;
+				// default:
+				loading(false);
+				toast.error("An error occured");
+				// }
 			}
 		};
 		check();

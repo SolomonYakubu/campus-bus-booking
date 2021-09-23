@@ -24,8 +24,8 @@ mongoose
 	.then((res) => console.log(`connected to db!!!`))
 	.catch((err) => console.log(err));
 
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
 app.use("/user", userRoutes);
 app.use("/bus", busRoutes);
