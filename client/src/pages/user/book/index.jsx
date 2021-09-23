@@ -30,10 +30,21 @@ const Options = ({ handleChange, loading }) => {
 	};
 	const history = useHistory();
 	const token = localStorage.getItem("token");
+	const data = localStorage.getItem("data")
+		? JSON.parse(localStorage.getItem("data"))
+		: "";
+	const config = {
+		reference: new Date().getTime().toString(),
+		email: data.email,
+		amount: 5000,
+		publicKey: "pk_test_0a4093b99f32878ae511ab0f19d32710c16702f8",
+	};
 	const [reference, setReference] = useState("");
 	const bookTicket = useQuery(
 		{
-			url: `http://localhost:8000/user/book/${localStorage.getItem("bus_id")}`,
+			url: `https://bookbus.herokuapp.com/user/book/${localStorage.getItem(
+				"bus_id"
+			)}`,
 			method: "post",
 			body: { chargeType: "bank", reference_id: reference.reference },
 		},
@@ -125,7 +136,9 @@ const Options = ({ handleChange, loading }) => {
 									loading(true);
 									try {
 										const response = await axios.post(
-											`user/book/${localStorage.getItem("bus_id")}`,
+											`https://bookbus.herokuapp.com/user/book/${localStorage.getItem(
+												"bus_id"
+											)}`,
 											{ chargeType: "wallet" },
 											{
 												headers: {
