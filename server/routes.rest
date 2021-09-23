@@ -1,7 +1,20 @@
-POST http://localhost:8000/user/login
+POST https://bookbus.herokuapp.com/bus/admin/login
 Content-Type: application/json
 
 {
-    "id":"tunde@gmail.com",
-    "password":"tunde"
+    "pin":"1010203"
+    
+}
+
+###
+
+POST https://bookbus.herokuapp.com/bus/register
+Content-Type: application/json
+Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaW4iOiIxMDEwMjAzIiwiaWF0IjoxNjMyMzYwMjM5LCJleHAiOjE2MzIzNjM4Mzl9.MXnu1-0rfE8XEGYV3-50T0VNsAdP9DknVKRacS0ldos"
+{
+   "bus_id":"001",
+			"password":"tunde",
+			"number_of_seat":"5",
+			"username":"tunde"
+    
 }

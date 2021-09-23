@@ -9,7 +9,7 @@ const authenticateAdmin = async (req, res, next) => {
 		if (!authHeader) {
 			return res.json({ message: "undefined" });
 		}
-		const token = await jwt.verify(authHeader, process.env.admin_SECRET);
+		const token = await jwt.verify(authHeader, process.env.ADMIN_SECRET);
 		req.data = token;
 		next();
 	} catch (err) {
