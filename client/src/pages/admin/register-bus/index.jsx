@@ -64,7 +64,7 @@ export default function RegisterBus({ loading }) {
 	return (
 		<div className="container">
 			<ToastContainer />
-			<form>
+			<form className="dashboard-div">
 				<input
 					type="text"
 					className="input"

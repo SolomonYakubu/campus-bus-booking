@@ -8,13 +8,21 @@ Content-Type: application/json
 
 ###
 
-POST https://bookbus.herokuapp.com/bus/register
+GET http://localhost:8000/bus
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaW4iOiIxMDEwMjAzIiwiaWF0IjoxNjMyNDMyMTk5LCJleHAiOjE2MzI0MzU3OTl9.TsNGpFPorJ4MaBUCM6M0CRC2Hchb-PUUJMPeFE7ZO6c
 Content-Type: application/json
-Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaW4iOiIxMDEwMjAzIiwiaWF0IjoxNjMyMzYwMjM5LCJleHAiOjE2MzIzNjM4Mzl9.MXnu1-0rfE8XEGYV3-50T0VNsAdP9DknVKRacS0ldos"
+
+
+
+###
+POST https://bookbus.herokuapp.com/bus/register
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaW4iOiIxMDEwMjAzIiwiaWF0IjoxNjMyNDMyMTk5LCJleHAiOjE2MzI0MzU3OTl9.TsNGpFPorJ4MaBUCM6M0CRC2Hchb-PUUJMPeFE7ZO6c
+Content-Type: application/json
+
 {
-   "bus_id":"001",
-			"password":"tunde",
+   "bus_id":"005",
+			"password":"samuel",
 			"number_of_seat":"5",
-			"username":"tunde"
+			"username":"samuel"
     
 }
