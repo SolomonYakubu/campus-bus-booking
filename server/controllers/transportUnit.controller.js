@@ -30,7 +30,7 @@ const registerBus = async (req, res) => {
 			bus_id,
 			password,
 			number_of_seat,
-			username: user.toLowerCase(),
+			username: username.toLowerCase(),
 		});
 
 		await bus.save();
