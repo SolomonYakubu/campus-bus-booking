@@ -101,13 +101,13 @@ const getBusesByDestination = async (req, res) => {
 		const availableBuses = bus.filter(
 			(item) =>
 				dayjs(item.departure_time).tz("Africa/Lagos") >
-				dayjs(dayjs().subtract(1, "minutes")).tz("Africa/Lagos")
+				dayjs(dayjs().subtract(5, "minutes")).tz("Africa/Lagos")
 		);
 
 		if (destination == "Hostel") {
 			if (
 				dayjs(user.booked.hostel.departure_time).tz("Africa/Lagos") >
-				dayjs(dayjs().subtract(7, "minutes")).tz("Africa/Lagos")
+				dayjs(dayjs().subtract(10, "minutes")).tz("Africa/Lagos")
 			) {
 				const bus = await Bus.findOne({ bus_id: user.booked.hostel.bus_id });
 				const ticket = bus.booked_seat.filter(
@@ -120,7 +120,7 @@ const getBusesByDestination = async (req, res) => {
 		if (destination == "Campus") {
 			if (
 				dayjs(user.booked.campus.departure_time).tz("Africa/Lagos") >
-				dayjs(dayjs().subtract(7, "minutes")).tz("Africa/Lagos")
+				dayjs(dayjs().subtract(10, "minutes")).tz("Africa/Lagos")
 			) {
 				const bus = await Bus.findOne({ bus_id: user.booked.campus.bus_id });
 				const ticket = bus.booked_seat.filter(
