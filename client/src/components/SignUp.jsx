@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const SignUp = ({
 	name,
 	matric,
@@ -9,7 +11,9 @@ const SignUp = ({
 	setPassword,
 	signUp,
 	isSignUpEmpty,
+	toast,
 }) => {
+	const [confirm, setConfirm] = useState("");
 	return (
 		<>
 			<input
@@ -40,9 +44,21 @@ const SignUp = ({
 				onChange={(e) => setPassword(e.target.value)}
 				placeholder="Password"
 			/>
+			<input
+				type="password"
+				className="input"
+				value={confirm}
+				onChange={(e) => setConfirm(e.target.value)}
+				placeholder="Confirm Password"
+				required
+			/>
 			<button
 				className="button login-btn"
-				onClick={signUp}
+				onClick={() =>
+					password === confirm
+						? signUp()
+						: toast.error("Password doesn't match")
+				}
 				style={{ opacity: isSignUpEmpty ? "0.6" : "1" }}
 			>
 				Sign Up

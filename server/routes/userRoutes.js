@@ -16,4 +16,9 @@ router.get(
 );
 router.post("/book/:id", authenticateUser, userController.bookBusById);
 router.post("/wallet/fund", authenticateUser, userController.fundUserWallet);
+router.post(
+	"/cancel-trip/:destination/:bus_id",
+	authenticateUser,
+	userController.cancelTrip
+);
 module.exports = router;

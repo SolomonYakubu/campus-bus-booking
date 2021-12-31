@@ -94,14 +94,20 @@ const loginUser = async (req, res) => {
  */
 const getBusesByDestination = async (req, res) => {
 	const { destination } = req.params;
+
 	try {
-		const bus = await Bus.find();
+		let bus = await Bus.find();
 		const user = await User.findById(req.data.id);
-		const availableBuses = bus.filter((item) => item.available);
+		const availableBuses = bus.filter(
+			(item) =>
+				dayjs(item.departure_time).tz("Africa/Lagos") >
+				dayjs(dayjs().subtract(1, "minutes")).tz("Africa/Lagos")
+		);
+
 		if (destination == "Hostel") {
 			if (
 				dayjs(user.booked.hostel.departure_time).tz("Africa/Lagos") >
-				dayjs(dayjs()).tz("Africa/Lagos")
+				dayjs(dayjs().subtract(7, "minutes")).tz("Africa/Lagos")
 			) {
 				const bus = await Bus.findOne({ bus_id: user.booked.hostel.bus_id });
 				const ticket = bus.booked_seat.filter(
@@ -114,7 +120,7 @@ const getBusesByDestination = async (req, res) => {
 		if (destination == "Campus") {
 			if (
 				dayjs(user.booked.campus.departure_time).tz("Africa/Lagos") >
-				dayjs(dayjs()).tz("Africa/Lagos")
+				dayjs(dayjs().subtract(7, "minutes")).tz("Africa/Lagos")
 			) {
 				const bus = await Bus.findOne({ bus_id: user.booked.campus.bus_id });
 				const ticket = bus.booked_seat.filter(
@@ -134,6 +140,7 @@ const getBusesByDestination = async (req, res) => {
 				departure_time: item.departure_time,
 			}))
 		);
+		console.log(await bus.save());
 	} catch (error) {
 		res.json({ message: error.message });
 	}
@@ -258,6 +265,52 @@ const fundUserWallet = async (req, res) => {
 		return res.json({ message: error.message });
 	}
 };
+/**
+ * @desc  Cancel a trip
+ * @route POST /user/cancel-trip/:destination/:bus_id
+ * @access Private
+ */
+const cancelTrip = async (req, res) => {
+	const { destination, bus_id } = req.params;
+
+	console.log(bus_id);
+	try {
+		const user = await User.findById(req.data.id);
+		const bus = await Bus.findOne({ bus_id });
+		console.log(bus);
+		const runAction = () => {
+			user.wallet += 50;
+			for (let i = 0; i < bus.booked_seat.length; i++) {
+				if (bus.booked_seat[i].student_id === req.data.id) {
+					bus.booked_seat.splice(i, 1);
+				}
+			}
+		};
+		switch (destination) {
+			case "hostel":
+				user.booked.hostel = {
+					departure_time: 0,
+					destination: "Hostel",
+					bus_id: 0,
+				};
+
+				runAction();
+				break;
+			case "campus":
+				user.book.campus = {};
+				runAction();
+
+				break;
+			default:
+				return res.sendStatus(400);
+		}
+		await user.save();
+		await bus.save();
+		return res.sendStatus(200);
+	} catch (error) {
+		return res.json({ message: error.message });
+	}
+};
 module.exports = {
 	getUserInfo,
 	registerUser,
@@ -265,4 +318,5 @@ module.exports = {
 	getBusesByDestination,
 	bookBusById,
 	fundUserWallet,
+	cancelTrip,
 };

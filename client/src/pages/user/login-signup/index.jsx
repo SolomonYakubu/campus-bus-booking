@@ -221,6 +221,7 @@ export default function UserLogin({ loading }) {
 								setPassword={setPassword}
 								signUp={signUp}
 								isSignUpEmpty={isSignUpEmpty}
+								toast={toast}
 							/>
 						)}
 					</form>

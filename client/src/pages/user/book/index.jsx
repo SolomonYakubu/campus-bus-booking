@@ -67,7 +67,7 @@ const Options = ({ handleChange, loading }) => {
 						},
 					}
 				);
-				// console.log(response);
+
 				localStorage.setItem(
 					"ticket",
 					JSON.stringify({

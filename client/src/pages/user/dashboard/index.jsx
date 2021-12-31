@@ -1,15 +1,18 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBus } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import useQuery from "../../../hooks/useQuery";
 
+import Swal from "sweetalert2";
+
 import empty from "../../../assets/empty.svg";
 import Pay from "../../../components/Pay.jsx";
+import axios from "axios";
 
 export default function UserDashboard({
 	loading,
@@ -46,6 +49,51 @@ export default function UserDashboard({
 		loading
 	);
 
+	const cancelTrip = async (destination, bus_id) => {
+		console.log(destination.toLowerCase(), bus_id);
+		Swal.fire({
+			title: "Do you really want to cancel trip?",
+
+			showCancelButton: true,
+			confirmButtonText: "Yes",
+		}).then(async (result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+				try {
+					const response = await axios.post(
+						`https://bookbus.herokuapp.com/user/cancel-trip/${destination.toLowerCase()}/${bus_id}`,
+						{},
+						{
+							headers: {
+								Authorization: `Bearer ${localStorage.getItem("token")}`,
+							},
+						}
+					);
+
+					toast.success("Trip cancelled successfully");
+					setTimeout(() => window.location.reload(), 1500);
+				} catch (error) {
+					switch (error.message) {
+						case "400":
+							toast.error("An error occured", {
+								position: "top-right",
+								autoClose: 3000,
+								hideProgressBar: "false",
+							});
+							break;
+
+						case "401":
+							toast.error("Session Expired");
+							history.push("/admin");
+							localStorage.clear();
+							break;
+						default:
+							toast.error("An error occured");
+					}
+				}
+			}
+		});
+	};
 	const history = useHistory();
 	const handleActive = useCallback(
 		async (val) => {
@@ -120,6 +168,7 @@ export default function UserDashboard({
 			className="container"
 			// style={{ paddingTop: "5rem", paddingBottom: "2rem" }}
 		>
+			<ToastContainer />
 			<div
 				style={{
 					fontSize: "25px",
@@ -303,6 +352,17 @@ export default function UserDashboard({
 										}}
 									>
 										View Ticket
+									</button>
+									<button
+										className="button book red"
+										onClick={() =>
+											cancelTrip(
+												bus[Object.keys(bus)[0]].destination,
+												bus[Object.keys(bus)[0]].bus_id
+											)
+										}
+									>
+										Cancel Trip
 									</button>
 								</div>
 							) : null}

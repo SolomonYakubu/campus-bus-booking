@@ -26,7 +26,6 @@ export default function DriverDashboard({ loading }) {
 					>
 						Create New Trip
 					</button>
-					<button className="input button green">Suspend Current Trip</button>
 				</div>
 			)}
 		</div>

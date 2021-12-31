@@ -1,9 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-// import bus from "../../assets/bus2.svg";
-// import education from "../../assets/education.svg";
+import TypingEffect from "react-typing-effect";
 import admin from "../../assets/admin.svg";
 import student from "../../assets/student.svg";
 import driver from "../../assets/driver.svg";
@@ -15,6 +12,28 @@ export default function Home() {
 			className="container"
 			// style={{ marginBottom: "20px", marginTop: "80px" }}
 		>
+			<div
+				style={{
+					color: "#808080",
+					fontFamily: "Staatliches",
+					fontSize: "24px",
+					marginBottom: "10px",
+					marginTop: "30px",
+				}}
+			>
+				<TypingEffect
+					text={[
+						"Federal Polytechnic Nasarawa",
+						"Project By...",
+						"Yakubu Abraham",
+						"BookBus",
+						"Booking Made Easy😎😎",
+					]}
+					speed={50}
+					eraseDelay={2000}
+				/>
+			</div>
+
 			<p
 				style={{
 					fontFamily: "flamenco",

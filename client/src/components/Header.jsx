@@ -32,15 +32,6 @@ export default function Header({
 					</svg> */}
 					{localStorage.getItem("token") ? (
 						<>
-							<FontAwesomeIcon
-								icon={faCoins}
-								size="2x"
-								style={{
-									// color: "#444",
-									marginRight: "5px",
-									color: "#fff",
-								}}
-							/>
 							<div
 								style={{
 									color: "#fff",

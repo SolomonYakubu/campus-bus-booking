@@ -8,7 +8,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8000/bus
+GET https://bookbus.herokuapp.com/bus
 Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaW4iOiIxMDEwMjAzIiwiaWF0IjoxNjMyNDMyMTk5LCJleHAiOjE2MzI0MzU3OTl9.TsNGpFPorJ4MaBUCM6M0CRC2Hchb-PUUJMPeFE7ZO6c
 Content-Type: application/json
 

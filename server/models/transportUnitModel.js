@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+var dayjs = require("dayjs");
+var utc = require("dayjs/plugin/utc");
+var timezone = require("dayjs/plugin/timezone");
 const busSchema = mongoose.Schema({
 	bus_id: {
 		type: Number,
@@ -16,10 +19,7 @@ const busSchema = mongoose.Schema({
 		type: String,
 		unique: true,
 	},
-	available: {
-		type: Boolean,
-		default: false,
-	},
+
 	number_of_seat: Number,
 	booked_seat: [
 		{
@@ -32,6 +32,7 @@ const busSchema = mongoose.Schema({
 
 	departure_time: {
 		type: Date,
+		default: dayjs(dayjs().subtract(1, "minutes")).tz("Africa/Lagos"),
 	},
 });
 

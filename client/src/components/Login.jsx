@@ -17,6 +17,7 @@ const Login = ({ id, password, setId, setPassword, login, isLoginEmpty }) => {
 				placeholder="Password"
 				required
 			/>
+
 			<button
 				className="button login-btn"
 				onClick={login}

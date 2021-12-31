@@ -7,6 +7,7 @@ export default function RegisterBus({ loading }) {
 	const [password, setPassword] = useState("");
 	const [busId, setBusId] = useState("");
 	const [seat, setSeat] = useState("");
+	const [confirm, setConfirm] = useState("");
 	const [isFieldEmpty, setIsFieldEmpty] = useState(true);
 	const history = useHistory();
 	useEffect(() => {
@@ -40,6 +41,7 @@ export default function RegisterBus({ loading }) {
 				setUsername("");
 				setBusId("");
 				setSeat("");
+				setConfirm("");
 			}
 		} catch (error) {
 			switch (error.message) {
@@ -82,7 +84,7 @@ export default function RegisterBus({ loading }) {
 					required
 				/>
 				<input
-					type="text"
+					type="number"
 					className="input"
 					value={seat}
 					onChange={(e) => setSeat(e.target.value)}
@@ -97,9 +99,22 @@ export default function RegisterBus({ loading }) {
 					placeholder="Password"
 					required
 				/>
+				<input
+					type="password"
+					className="input"
+					value={confirm}
+					onChange={(e) => setConfirm(e.target.value)}
+					placeholder="Confirm Password"
+					required
+				/>
+
 				<button
 					className="button green input"
-					onClick={register}
+					onClick={() =>
+						password === confirm
+							? register()
+							: toast.error("Password doesn't match")
+					}
 					style={{ opacity: isFieldEmpty ? "0.6" : "1" }}
 				>
 					Register
