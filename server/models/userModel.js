@@ -27,7 +27,10 @@ const userSchema = mongoose.Schema({
 	booked: {
 		hostel: {
 			bus_id: Number,
-			departure_time: Date,
+			departure_time: {
+				type: Date,
+				default: 0,
+			},
 			destination: {
 				type: String,
 				default: "Hostel",
@@ -35,7 +38,10 @@ const userSchema = mongoose.Schema({
 		},
 		campus: {
 			bus_id: Number,
-			departure_time: Date,
+			departure_time: {
+				type: Date,
+				default: 0,
+			},
 			destination: {
 				type: String,
 				default: "Campus",
