@@ -32,7 +32,7 @@ const busSchema = mongoose.Schema({
 
 	departure_time: {
 		type: Date,
-		default: dayjs(dayjs().subtract(1, "minutes")).tz("Africa/Lagos"),
+		default: 0,
 	},
 });
 
