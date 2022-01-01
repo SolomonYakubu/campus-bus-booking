@@ -118,7 +118,7 @@ const setDriverStatus = async (req, res) => {
 		const bus = await Bus.findById(bus_id);
 		if (
 			dayjs(bus.departure_time).tz("Africa/Lagos") >
-			dayjs(dayjs().subtract(1, "minutes")).tz("Africa/Lagos")
+			dayjs(dayjs()).tz("Africa/Lagos")
 		) {
 			return res.sendStatus(400);
 		}
