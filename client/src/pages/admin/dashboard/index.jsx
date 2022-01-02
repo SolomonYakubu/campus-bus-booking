@@ -16,7 +16,7 @@ export default function AdminDashboard({ loading }) {
 					className="input button green"
 					onClick={() => history.push("/admin/buses")}
 				>
-					View Registered Busess
+					View Registered Buses
 				</button>
 			</div>
 		</div>

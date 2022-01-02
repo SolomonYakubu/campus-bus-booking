@@ -22,6 +22,12 @@ export default function DriverDashboard({ loading }) {
 					</button>
 					<button
 						className="input button green"
+						onClick={() => history.push("/driver/ongoing-trip")}
+					>
+						Ongoing Trip
+					</button>
+					<button
+						className="input button green"
 						onClick={() => history.push("/driver/newtrip")}
 					>
 						Create New Trip

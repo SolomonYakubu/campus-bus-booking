@@ -22,4 +22,14 @@ router.get(
 	authenticateDriver,
 	transportUnitController.verifyTicket
 );
+router.get(
+	"/driver/ongoing-trip",
+	authenticateDriver,
+	transportUnitController.ongoingTrip
+);
+router.delete(
+	"/admin/delete-driver",
+	authenticateAdmin,
+	transportUnitController.deleteDriver
+);
 module.exports = router;

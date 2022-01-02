@@ -82,6 +82,33 @@ const getBuses = async (req, res) => {
 };
 
 /**
+ * @desc  delete a driver
+ * @route DELETE /bus/admin/delete-driver
+ * @access Private
+ */
+const deleteDriver = async (req, res) => {
+	const pin = req.body.pin;
+	const bus_id = req.body.bus_id;
+	try {
+		const bus = await Bus.findOne({ bus_id });
+
+		if (!bus) {
+			return res.sendStatus(404);
+		}
+		if (!pin) {
+			return res.sendStatus(400);
+		}
+		if (pin === adminPin) {
+			await bus.delete();
+			return res.sendStatus(200);
+		}
+		return res.sendStatus(400);
+	} catch (error) {
+		res.json({ message: error.message });
+	}
+};
+
+/**
  * @desc  Login to drivers account
  * @route POST /bus/driver/login
  * @access Public
@@ -163,6 +190,26 @@ const verifyTicket = async (req, res) => {
 		return res.json({ message: error.message });
 	}
 };
+const ongoingTrip = async (req, res) => {
+	try {
+		const bus = await Bus.findById(req.data.id);
+		if (
+			dayjs(bus.departure_time).tz("Africa/Lagos") <
+			dayjs(dayjs().subtract(10, "minutes")).tz("Africa/Lagos")
+		) {
+			return res.sendStatus(400);
+		}
+		return res.json({
+			destination: bus.destination,
+			departure_time: dayjs(bus.departure_time)
+				.tz("Africa/Lagos")
+				.format("hh:mm A"),
+			booked_seat: bus.booked_seat.length,
+		});
+	} catch (error) {
+		res.json({ message: error.message });
+	}
+};
 
 module.exports = {
 	registerBus,
@@ -171,4 +218,6 @@ module.exports = {
 	setDriverStatus,
 	verifyTicket,
 	getBuses,
+	ongoingTrip,
+	deleteDriver,
 };

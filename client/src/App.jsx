@@ -18,6 +18,7 @@ import UserDashboard from "./pages/user/dashboard";
 import AdminDashboard from "./pages/admin/dashboard";
 import RegisterBus from "./pages/admin/register-bus";
 import Buses from "./pages/admin/buses";
+import OngoingTrip from "./pages/driver/ongoing-tip/OngoingTrip";
 function App() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [showNavbar, setShowNavbar] = useState(false);
@@ -107,6 +108,9 @@ function App() {
 							</Route>
 							<Route exact path="/driver/newtrip">
 								<NewTrip loading={loading} />
+							</Route>
+							<Route exact path="/driver/ongoing-trip">
+								<OngoingTrip loading={loading} />
 							</Route>
 							<Route exact path="/user/ticket">
 								<Ticket loading={loading} />

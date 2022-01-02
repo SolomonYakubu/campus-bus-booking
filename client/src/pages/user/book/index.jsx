@@ -42,7 +42,7 @@ const Options = ({ handleChange, loading }) => {
 	// const [reference, setReference] = useState("");
 	// const bookTicket = useQuery(
 	// 	{
-	// 		url: `https://bookbus.herokuapp.com/user/book/${localStorage.getItem(
+	// 		url: `http://localhost:8000/user/book/${localStorage.getItem(
 	// 			"bus_id"
 	// 		)}`,
 	// 		method: "post",
@@ -57,9 +57,7 @@ const Options = ({ handleChange, loading }) => {
 			try {
 				loading(true);
 				const response = await axios.post(
-					`https://bookbus.herokuapp.com/user/book/${localStorage.getItem(
-						"bus_id"
-					)}`,
+					`http://localhost:8000/user/book/${localStorage.getItem("bus_id")}`,
 					{ chargeType: "bank", reference_id: reference.reference },
 					{
 						headers: {
@@ -148,7 +146,7 @@ const Options = ({ handleChange, loading }) => {
 									loading(true);
 									try {
 										const response = await axios.post(
-											`https://bookbus.herokuapp.com/user/book/${localStorage.getItem(
+											`http://localhost:8000/user/book/${localStorage.getItem(
 												"bus_id"
 											)}`,
 											{ chargeType: "wallet" },

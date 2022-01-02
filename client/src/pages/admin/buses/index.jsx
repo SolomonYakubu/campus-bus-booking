@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBus } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useHistory } from "react-router-dom";
-
+import Swal from "sweetalert2";
 import useQuery from "../../../hooks/useQuery";
+import axios from "axios";
 
 import empty from "../../../assets/empty.svg";
 
@@ -20,7 +21,66 @@ export default function Buses({ loading }) {
 	);
 
 	const history = useHistory();
+	const deleteBus = async (bus_id) => {
+		const { value: pin } = await Swal.fire({
+			title: "Input Pin",
+			input: "password",
 
+			inputPlaceholder: "Enter your Pin",
+		});
+		if (pin) {
+			try {
+				loading(true);
+				const response = await axios({
+					url: `https://bookbus.herokuapp.com/bus/admin/delete-driver`,
+					method: "DELETE",
+					data: { pin, bus_id },
+					headers: {
+						"content-type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+					},
+				});
+				if (response.status === 200) {
+					Swal.fire("Account deleted successfully!");
+
+					loading(false);
+					window.location.reload();
+					return;
+				}
+				loading(false);
+			} catch (error) {
+				const err = error.message.split(" ")[5];
+				loading(false);
+				console.log(err);
+				switch (err) {
+					case "401":
+						toast.error("Session expired", {
+							position: "top-right",
+							autoClose: 3000,
+							hideProgressBar: "false",
+						});
+						setTimeout(() => {
+							history.push("/admin");
+							localStorage.clear();
+						}, 3000);
+						break;
+					case "400":
+						toast.error("Incorrect pin", {
+							position: "top-right",
+							autoClose: 3000,
+							hideProgressBar: "false",
+						});
+						break;
+					default:
+						toast.error("Network error", {
+							position: "top-right",
+							autoClose: 3000,
+							hideProgressBar: "false",
+						});
+				}
+			}
+		}
+	};
 	const getData = useCallback(async () => {
 		try {
 			const response = await getBusQuery();
@@ -48,6 +108,7 @@ export default function Buses({ loading }) {
 			className="container"
 			// style={{ paddingTop: "5rem", paddingBottom: "2rem" }}
 		>
+			<ToastContainer />
 			<div
 				style={{
 					fontSize: "22px",
@@ -95,6 +156,12 @@ export default function Buses({ loading }) {
 							<p style={{ fontFamily: "arapey", color: "#444" }}>
 								Number of Seats: {item.number_of_seat}
 							</p>
+							<button
+								className="button red"
+								onClick={() => deleteBus(item.bus_id)}
+							>
+								Delete
+							</button>
 						</div>
 					))
 				) : (
