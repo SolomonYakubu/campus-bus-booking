@@ -27,7 +27,7 @@ export default function OngoingTrip({ loading }) {
 				case "400":
 					Swal.fire({
 						type: "success",
-						text: "You have no ongoing trip",
+						text: "You currently have no active trip",
 					});
 					setTimeout(() => {
 						history.push("/driver/dashboard");
@@ -53,9 +53,9 @@ export default function OngoingTrip({ loading }) {
 		<div className="container">
 			<ToastContainer />
 			<div className="home-div">
-				<h1>Ongoing Trip Details</h1>
+				<h1>Booking Status</h1>
 				<p>Destination: {data.destination}</p>
-				<p>Departure time: {data.departure_time}</p>
+				<p>Departure Time: {data.departure_time}</p>
 				<p>Number of booked seat: {data.booked_seat}</p>
 			</div>
 		</div>

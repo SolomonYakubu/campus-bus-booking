@@ -24,7 +24,7 @@ export default function DriverDashboard({ loading }) {
 						className="input button green"
 						onClick={() => history.push("/driver/ongoing-trip")}
 					>
-						Ongoing Trip
+						View Bookings
 					</button>
 					<button
 						className="input button green"
